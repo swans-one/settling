@@ -1,12 +1,13 @@
 # Ignore python cruft
 *.py[cod]
 
-# Ignore virtualenv cruft
+# Ignore pyvenv cruft
 bin
 include
 lib
 share
 .Python
+pyvenv.cfg
 
 # Ignore emacs cruft
 *.~
