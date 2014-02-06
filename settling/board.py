@@ -1,23 +1,47 @@
+import random
+
 import networkx as nx
 
-# Default port order is defined from the number '1' printed on the
-# puzzle-style border pieces, working clockwise.
-#
-# If you right zip this into 9 water tiles, you get the outside of the
-# board (zip(water9, DEFAULT_PORT_ORDER)).
-DEFAULT_PORT_ORDER = ["3:1 port", "3:1 port", "brick port", "wood port",
+
+DEFAULT_TILE_ORDER = ("wheat", "sheep", "wheat",
+                      "sheep", "brick", "wood", "ore",
+                      "wood", "ore", "wheat", "sheep", "wood",
+                      "brick", "wood", "sheep", "wheat",
+                      "desert", "brick", "ore")
+
+DEFAULT_NUMBER_ORDER = (9, 10, 8, 12, 5, 4, 3, 11, 6,
+                        11, 9, 6, 4, 3, 10, 2, 8, 5)
+
+DEFAULT_PORT_ORDER = ("3:1 port", "3:1 port", "brick port", "wood port",
                       "3:1 port", "wheat port", "ore port", "3:1 port", 
-                      "sheep port"]
+                      "sheep port")
+
+TILES = [].extend(["wood"] * 4,
+                  ["brick"] * 3,
+                  ["wheat"] * 4,
+                  ["sheep"] * 4,
+                  ["ore"] * 3,
+                  ["desert"])
+
+NUMBERS = [2, 12] + list(range(3,12)) * 2
+
+PORTS = ["wood port", "brick port", "wheat port", "sheep port", "ore port",
+         "3:1 port", "3:1 port", "3:1 port", "3:1 port"]
+
 
 def random_board():
-    pass
+    # shuffled copies of the three lists
+    tile_order = random.sample(TILES, len(TILES))
+    port_order = random.sample(PORTS, len(PORTS))
+    number_order = random.sample(NUMBERS, len(NUMBERS))
+    return Board(tile_order, number_order, port_order)
 
 class Board:
-    def __init__(self, tile_order, port_order, number_order):
-        """Set up a board from order of tiles/ports/numbers.
+    def __init__(self, tile_order, number_order, port_order):
+        """Set up a board from order of tiles/numbers/port.
 
         Since a board is completely determined by the arrangement of
-        tiles, ports and numbers, we only require that these be passed
+        tiles, numbers, and ports we only require that these be passed
         in as lists.
 
         Tile order is defined to be five rows of tiles, where the i'th
@@ -75,19 +99,16 @@ class Tile:
     Possible Numbers:
        1-6, 8-12
     """
-    def __init__(self, tile_type, number, has_robber = False):
+    def __init__(self, tile_type, number, has_robber=False):
         self.tile_type = tile_type
         self.number = number
         self.has_robber = has_robber
+        self.port = port
 
 class Vertex:
-    def __init__(self, settlement = None):
+    def __init__(self, settlement=None):
         self.settlement = settlement
 
 class Connection:
-    def __init__(self, road = None):
+    def __init__(self, road=None):
         self.road = road
-
-class Port:
-    def __init__(self, port_type):
-        self.port_type = port_type
