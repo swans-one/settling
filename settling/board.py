@@ -9,9 +9,8 @@ DEFAULT_PORT_ORDER = ["3:1 port", "3:1 port", "brick port", "wood port",
                       "3:1 port", "wheat port", "ore port", "3:1 port", 
                       "sheep port"]
 
-def make_random_board():
-    board = Board()
-    return Board()
+def random_board():
+    pass
 
 class Board:
     def __init__(self, tile_order, port_order, number_order):
@@ -35,6 +34,9 @@ class Board:
         top-left-vertex. Proceeding from this edge there are two blank
         connections and then a connection with a port.
         """
+        self.tile_order = tile_order
+        self.port_order = port_order
+        self.number_order = number_order
         self.graph = self._set_up(tile_order, port_order, number_order)
 
     def _set_up(self, tile_order, port_order, number_order):
@@ -85,3 +87,7 @@ class Vertex:
 class Connection:
     def __init__(self, road = None):
         self.road = road
+
+class Port:
+    def __init__(self, port_type):
+        self.port_type = port_type
