@@ -1,4 +1,5 @@
 import random
+import itertools
 
 import networkx as nx
 
@@ -16,12 +17,9 @@ DEFAULT_PORT_ORDER = ("3:1 port", "3:1 port", "brick port", "wood port",
                       "3:1 port", "wheat port", "ore port", "3:1 port", 
                       "sheep port")
 
-TILES = [].extend(["wood"] * 4,
-                  ["brick"] * 3,
-                  ["wheat"] * 4,
-                  ["sheep"] * 4,
-                  ["ore"] * 3,
-                  ["desert"])
+TILES = list(itertools.chain(
+    ["wood"] * 4, ["brick"] * 3, ["wheat"] * 4, ["sheep"] * 4, ["ore"] * 3, ["desert"]
+))
 
 NUMBERS = [2, 12] + list(range(3,12)) * 2
 
@@ -58,10 +56,10 @@ class Board:
         top-left-vertex. Proceeding from this edge there are two blank
         connections and then a connection with a port.
         """
-        self.tile_order = tile_order
-        self.port_order = port_order
-        self.number_order = number_order
-        self.graph = self._set_up(tile_order, port_order, number_order)
+        self.tile_order = list(tile_order)
+        self.port_order = list(port_order)
+        self.number_order = list(number_order)
+        self.graph = self._set_up(self.tile_order, self.port_order, self.number_order)
 
     def _set_up(self, tile_order, port_order, number_order):
         board_graph = nx.Graph()
@@ -69,6 +67,8 @@ class Board:
         desert_index = tile_order.index("desert")
         number_order.insert(desert_index, None)
         resource_tiles = [Tile(t, n) for t, n in zip(tile_order, number_order)]
+
+        water_tiles = [Tile(t, None) for t in zip(*zip(["water"] * 9, port_order))]
         # 4 -- 3:1
         # 1 -- 2:1 each of sheep, wood, brick, ore, wheat
         # 9 -- water tiles
@@ -103,7 +103,6 @@ class Tile:
         self.tile_type = tile_type
         self.number = number
         self.has_robber = has_robber
-        self.port = port
 
 class Vertex:
     def __init__(self, settlement=None):

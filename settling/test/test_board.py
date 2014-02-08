@@ -1,18 +1,22 @@
 import unittest
+
+import networkx as nx
+
 import board
 
-class Test_random_board():
+class Test_random_board(unittest.TestCase):
     def test_returns_board(self):
         """We just check that a board object is returned
         """
-        random_board = board.random_board
-        self.assertIsInstance(random_board, Board)
+        random_board = board.random_board()
+        self.assertIsInstance(random_board, board.Board)
 
 class Test_Board__set_up(unittest.TestCase):
     def setUp(self):
-        self.numbers = [2] + [12] + list(range(3,12)) + list(range(3,12))
-        self.tiles = 
-        self.tiles = DEFAULT_PORT_ORDER
+        self.tiles = board.DEFAULT_TILE_ORDER
+        self.numbers = board.DEFAULT_NUMBER_ORDER
+        self.ports = board.DEFAULT_PORT_ORDER
 
     def test_returns_graph_object(self):
-        board.Board._set_up(None, ["wood", "desert"], [8], [])
+        b = board.Board(self.tiles, self.numbers, self.ports)
+        self.assertIsInstance(b.graph, nx.Graph)
