@@ -3,6 +3,29 @@ import unittest
 import board_types
 
 
+class Test_StandardBoardType_ordinal_from_hexagon(unittest.TestCase):
+    def setUp(self):
+        """Create an instance of the standard board type.
+        """
+        self.bt = board_types.StandardBoardType()
+
+    def test_works(self):
+        """A simple test that the correct ordinal is returned.
+        """
+        self.assertEqual(self.bt.ordinal_from_hexagon((3, -1, -2)), 36)
+
+    def test_round_trip(self):
+        """Test that going through a round trip works.
+
+        We send a value first through hexagon_from_ordinal, then
+        through ordinal_from_hexagon, and compare to the original.
+        """
+        start_ordinal = 77
+        end_hexagon = self.bt.hexagon_from_ordinal(start_ordinal)
+        end_ordinal = self.bt.ordinal_from_hexagon(end_hexagon)
+        self.assertEqual(start_ordinal, end_ordinal)
+
+
 class Test_StandardBoardType_hexagon_from_ordinal(unittest.TestCase):
     def setUp(self):
         """Create an instance of the standard board type.

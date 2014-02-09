@@ -29,7 +29,26 @@ class StandardBoardType(BoardType):
     """The standard 3-4 player catan board.
     """
     def ordinal_from_hexagon(self, hex_coords):
-        pass
+        """Give the ordinal location of a tile given its hexagon coordinates.
+        """
+        # First check that the coordinates are valid
+        if sum(hex_coords) != 0:
+            raise ValueError("{0} are not valid hexagon coordinates".format(hex_coords))
+
+        # Iterate through all the ordinal numbers, comparing to their
+        # hexagon coordinates to those given.
+        #
+        # This method ensures that the ordering is consistent in both
+        # directions.
+        MAX_SEARCH = 1000
+        current_ordinal = 0
+        while current_ordinal < MAX_SEARCH:
+            hexagon = self.hexagon_from_ordinal(current_ordinal)
+            if hexagon == hex_coords:
+                return current_ordinal
+            current_ordinal += 1
+        err_msg = "Cannot find coordinates in first {0} ordinals"
+        raise ValueError(err_msg.format(MAX_SEARCH))
 
     def hexagon_from_ordinal(self, ordinal):
         ring, spine, offset = self.ring_spine_offset_from_ordinal(ordinal)
