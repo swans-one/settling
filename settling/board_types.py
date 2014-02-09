@@ -32,7 +32,9 @@ class StandardBoardType(BoardType):
         pass
 
     def hexagon_from_ordinal(self, ordinal):
-        pass
+        ring, spine, offset = self.ring_spine_offset_from_ordinal(ordinal)
+        hexagon_coords = self.hexagon_from_ring_spine_offset(ring, spine, offset)
+        return hexagon_coords
 
     def ring_spine_offset_from_ordinal(self, ordinal):
         ring = self._find_ring(ordinal)

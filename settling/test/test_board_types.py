@@ -3,6 +3,24 @@ import unittest
 import board_types
 
 
+class Test_StandardBoardType_hexagon_from_ordinal(unittest.TestCase):
+    def setUp(self):
+        """Create an instance of the standard board type.
+        """
+        self.bt = board_types.StandardBoardType()
+
+    def test_works(self):
+        """A few assertions to test that this works.
+
+        Since the underlying componenets of this are thoroughly
+        tested, this amounts to an integration test.
+        """
+        self.assertEqual(self.bt.hexagon_from_ordinal(22), (0, 3, -3))
+        self.assertEqual(self.bt.hexagon_from_ordinal(11), (-2, 2, 0))
+        self.assertEqual(self.bt.hexagon_from_ordinal(32), (1, -3, 2))
+        self.assertEqual(self.bt.hexagon_from_ordinal(36), (3, -1, -2))
+
+
 class Test_StandardBoardType_ring_spine_offset_from_ordinal(unittest.TestCase):
     def setUp(self):
         """Create an instance of the standard board type.
