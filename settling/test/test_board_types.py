@@ -2,6 +2,104 @@ import unittest
 
 import board_types
 
+
+class Test_StandardBoardType_ring_spine_offset_from_ordinal(unittest.TestCase):
+    def setUp(self):
+        """Create an instance of the standard board type.
+        """
+        self.bt = board_types.StandardBoardType()
+
+    def test_returns_triple(self):
+        """A simple test that (ring, spine, offset) is returned.
+
+        The helper functions that go into this are more thoroughly
+        unit tested.
+        """
+        expected = (3, 1, 1)
+        ring, spine, offset = self.bt.ring_spine_offset_from_ordinal(23)
+        self.assertEqual((ring, spine, offset), expected)
+
+
+class Test_StandardBoardType__find_ring(unittest.TestCase):
+    """Test the recursive traversal of the triangular numbers.
+    """
+    def setUp(self):
+        """Create an instance of the standard board type.
+        """
+        self.bt = board_types.StandardBoardType()
+
+    def test_ring_zero(self):
+        """Ordinal 0 -> ring 0.
+        """
+        expected_ring = 0
+        ring = self.bt._find_ring(0)
+        self.assertEqual(ring, expected_ring)
+
+    def test_ring_one(self):
+        """Ordinal 6 -> ring 1.
+        """
+        expected_ring = 1
+        ring = self.bt._find_ring(6)
+        self.assertEqual(ring, expected_ring)
+
+    def test_ring_four(self):
+        """Ordinal 43 -> ring 4.
+        """
+        expected_ring = 4
+        ring = self.bt._find_ring(43)
+        self.assertEqual(ring, expected_ring)
+
+
+class Test_StandardBoardType__find_spine(unittest.TestCase):
+    def setUp(self):
+        """Create an instance of the standard board type.
+        """
+        self.bt = board_types.StandardBoardType()
+
+    def test_ring_zero(self):
+        """Spine should be zero on ordinal zero, ring zero.
+        """
+        expected_spine = 0
+        spine = self.bt._find_spine(0, 0)
+        self.assertEqual(spine, expected_spine)
+
+    def test_ring_one(self):
+        expected_spine = 2
+        spine = self.bt._find_spine(3, 1)
+        self.assertEqual(spine, expected_spine)
+
+    def test_ring_three(self):
+        expected_spine = 0
+        spine = self.bt._find_spine(19, 3)
+        self.assertEqual(spine, expected_spine)
+
+    def test_ring_four(self):
+        expected_spine = 5
+        spine = self.bt._find_spine(60, 4)
+        self.assertEqual(spine, expected_spine)
+
+class Test_StandardBoardType__find_offset(unittest.TestCase):
+    def setUp(self):
+        """Create an instance of the standard board type.
+        """
+        self.bt = board_types.StandardBoardType()
+
+    def test_ring_zero(self):
+        expected_offset = 0
+        offset = self.bt._find_offset(0, 0)
+        self.assertEqual(offset, expected_offset)
+
+    def test_ring_4_offset_zero(self):
+        expected_offset = 0
+        offset = self.bt._find_offset(37, 4)
+        self.assertEqual(offset, expected_offset)
+
+    def test_ring_4_offset_three(self):
+        expected_offset = 3
+        offset = self.bt._find_offset(60, 4)
+        self.assertEqual(offset, expected_offset)
+
+
 class Test_StandardBoardType_hexagon_from_ring_spine_offset(unittest.TestCase):
     def setUp(self):
         """Create an instance of the standard board type.

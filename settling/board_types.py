@@ -28,8 +28,47 @@ class BoardType(metaclass=ABCMeta):
 class StandardBoardType(BoardType):
     """The standard 3-4 player catan board.
     """
+    def ordinal_from_hexagon(self, hex_coords):
+        pass
+
     def hexagon_from_ordinal(self, ordinal):
         pass
+
+    def ring_spine_offset_from_ordinal(self, ordinal):
+        ring = self._find_ring(ordinal)
+        spine = self._find_spine(ordinal, ring)
+        offset = self._find_offset(ordinal, ring)
+        return ring, spine, offset
+
+    def _find_ring(self, ordinal, ring_so_far=0):
+        """Recursively traverses triangular numbers.
+        """
+        check = ordinal - (6 * ring_so_far)
+        if check <= 0:
+            return ring_so_far
+        else:
+            return self._find_ring(check, ring_so_far + 1)
+
+    def _find_spine(self, ordinal, ring):
+        if ordinal == 0:
+            return 0
+        tiles_before_ring = sum(self._tiles_in_ring(r) for r in range(ring))
+        ordinal_in_ring = ordinal - tiles_before_ring
+        tiles_per_spine = self._tiles_in_ring(ring) // 6
+        spine = ordinal_in_ring // tiles_per_spine
+        return spine
+
+    def _find_offset(self, ordinal, ring):
+        if ordinal == 0:
+            return 0
+        tiles_before_ring = sum(self._tiles_in_ring(r) for r in range(ring))
+        ordinal_in_ring = ordinal - tiles_before_ring
+        tiles_per_spine = self._tiles_in_ring(ring) // 6
+        offset = ordinal_in_ring % tiles_per_spine
+        return offset
+
+    def _tiles_in_ring(self, ring):
+        return 1 if ring == 0 else ring * 6
 
     def hexagon_from_ring_spine_offset(self, ring, spine, offset):
         """Converts from a ring, spine and offset into hexagon coords.
@@ -66,5 +105,3 @@ class StandardBoardType(BoardType):
             err_msg = "{r}, {s}, {o} is not a valid ring, spine, offset."
             raise ValueError(err_msg.format(r=ring, s=spine, o=offset))
 
-    def ordinal_from_hexagon(self, hex_coords):
-        pass
