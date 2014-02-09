@@ -32,6 +32,17 @@ class StandardBoardType(BoardType):
         pass
 
     def hexagon_from_ring_spine_offset(self, ring, spine, offset):
+        """Converts from a ring, spine and offset into hexagon coords.
+
+        - ring is the number of tiles to the center along the shortest path.
+
+        - spine is the nearest counter-clockwise "spoke" from the center.
+
+        - offset is the number of tiles clockwise from the spine.
+
+        This method is a helper method to make the implementation of
+        hexagon_from_ordinal clearer.
+        """
         ring_1 = [(1,0,-1), (0,1,-1), (-1,1,0), (-1,0,1), (0,-1,1), (1,-1,0)]
         if ring == 0 and spine == 0 and offset == 0:
             # We're in the center
