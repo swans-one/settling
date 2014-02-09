@@ -28,8 +28,8 @@ class BoardType(metaclass=ABCMeta):
 class StandardBoardType(BoardType):
     """The standard 3-4 player catan board.
     """
-    def hex_from_ordinal(self, ordinal):
+    def hexagon_from_ordinal(self, ordinal):
         pass
 
-    def ordinal_from_hex(self, hex_coords):
+    def ordinal_from_hexagon(self, hex_coords):
         pass
