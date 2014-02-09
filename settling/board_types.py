@@ -31,5 +31,29 @@ class StandardBoardType(BoardType):
     def hexagon_from_ordinal(self, ordinal):
         pass
 
+    def hexagon_from_ring_spine_offset(self, ring, spine, offset):
+        ring_1 = [(1,0,-1), (0,1,-1), (-1,1,0), (-1,0,1), (0,-1,1), (1,-1,0)]
+        if ring == 0 and spine == 0 and offset == 0:
+            # We're in the center
+            return (0, 0, 0)
+        elif ring == 1 and offset == 0:
+            # We're in the first ring
+            return ring_1[spine]
+        elif ring > 1 and offset == 0:
+            # We're on a spine
+            return tuple(ring * i for i in ring_1[spine])
+        elif ring > 1 and offset != 0:
+            # We move along the spine until we hit the next spine.
+            move = ring_1[spine]
+            next_loc = self.hexagon_from_ring_spine_offset(
+                ring = ring - 1,
+                spine = spine if offset < (ring - 1) else (spine + 1) % 6,
+                offset = offset if offset < (ring - 1) else 0,
+            )
+            return tuple(m + l for m, l in zip(move, next_loc))
+        else:
+            err_msg = "{r}, {s}, {o} is not a valid ring, spine, offset."
+            raise ValueError(err_msg.format(r=ring, s=spine, o=offset))
+
     def ordinal_from_hexagon(self, hex_coords):
         pass
