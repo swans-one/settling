@@ -28,6 +28,19 @@ class BoardType(metaclass=ABCMeta):
 class StandardBoardType(BoardType):
     """The standard 3-4 player catan board.
     """
+    def __init__(self):
+        """Create caches for the mapping between ordinal and hexagon values.
+
+        Since the computation in either direction can take a fair
+        amount of time, we cache the values to create amoritized
+        constant time lookups.
+
+        We do not use fancy methods such as decorators to populate
+        these caches, but rather code in the methods themselves.
+        """
+        self.cached_ordinal_from_hexagon = {}
+        self.cached_hexagon_from_ordinal = {}
+
     def ordinal_from_hexagon(self, hex_coords):
         """Give the ordinal location of a tile given its hexagon coordinates.
         """
@@ -35,8 +48,12 @@ class StandardBoardType(BoardType):
         if sum(hex_coords) != 0:
             raise ValueError("{0} are not valid hexagon coordinates".format(hex_coords))
 
-        # Iterate through all the ordinal numbers, comparing to their
-        # hexagon coordinates to those given.
+        # Go to the cache before iterating
+        if hex_coords in self.cached_ordinal_from_hexagon:
+            return self.cached_ordinal_from_hexagon[hex_coords]
+
+        # If the cache fails, iterate through all the ordinal numbers,
+        # comparing to their hexagon coordinates to those given.
         #
         # This method ensures that the ordering is consistent in both
         # directions.
@@ -45,14 +62,24 @@ class StandardBoardType(BoardType):
         while current_ordinal < MAX_SEARCH:
             hexagon = self.hexagon_from_ordinal(current_ordinal)
             if hexagon == hex_coords:
+                # cache computed value
+                self.cached_ordinal_from_hexagon[hex_coords] = current_ordinal
                 return current_ordinal
             current_ordinal += 1
         err_msg = "Cannot find coordinates in first {0} ordinals"
         raise ValueError(err_msg.format(MAX_SEARCH))
 
     def hexagon_from_ordinal(self, ordinal):
+        # Check the cache before computing
+        if ordinal in self.cached_hexagon_from_ordinal:
+            return self.cached_hexagon_from_ordinal[ordinal]
+
+        # If the value is not in the cache, compute it explicitly
         ring, spine, offset = self.ring_spine_offset_from_ordinal(ordinal)
         hexagon_coords = self.hexagon_from_ring_spine_offset(ring, spine, offset)
+
+        #cache computed value
+        self.cached_hexagon_from_ordinal[ordinal] = hexagon_coords
         return hexagon_coords
 
     def ring_spine_offset_from_ordinal(self, ordinal):
