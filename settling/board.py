@@ -3,6 +3,7 @@ import itertools
 
 import networkx as nx
 
+from board_types import StandardBoardType
 
 DEFAULT_TILE_ORDER = ("wheat", "sheep", "wheat",
                       "sheep", "brick", "wood", "ore",
@@ -14,7 +15,7 @@ DEFAULT_NUMBER_ORDER = (9, 10, 8, 12, 5, 4, 3, 11, 6,
                         11, 9, 6, 4, 3, 10, 2, 8, 5)
 
 DEFAULT_PORT_ORDER = ("3:1 port", "3:1 port", "brick port", "wood port",
-                      "3:1 port", "wheat port", "ore port", "3:1 port", 
+                      "3:1 port", "wheat port", "ore port", "3:1 port",
                       "sheep port")
 
 TILES = list(itertools.chain(
@@ -35,7 +36,8 @@ def random_board():
     return Board(tile_order, number_order, port_order)
 
 class Board:
-    def __init__(self, tile_order, number_order, port_order):
+    def __init__(self, tile_order, number_order, port_order,
+                 board_type = StandardBoardType):
         """Set up a board from order of tiles/numbers/port.
 
         Since a board is completely determined by the arrangement of
@@ -67,13 +69,11 @@ class Board:
         desert_index = tile_order.index("desert")
         number_order.insert(desert_index, None)
         resource_tiles = [Tile(t, n) for t, n in zip(tile_order, number_order)]
+        water_tiles = [Tile("water", None) for _ in range(18)]
+        tiles = resource_tiles + water_tiles
 
-        water_tiles = [Tile(t, None) for t in zip(*zip(["water"] * 9, port_order))]
-        # 4 -- 3:1
-        # 1 -- 2:1 each of sheep, wood, brick, ore, wheat
-        # 9 -- water tiles
-        # 54 vertexes -- 7, 9, 11, 11, 9, 7
-        # 18 numbers
+        board_graph.add_nodes_from(tiles)
+
         return board_graph
 
     def add_road(self):
@@ -87,14 +87,12 @@ class Board:
 
     def coord_to_node(self):
         pass
-        
+
 
 class Tile:
     """
     Possible Tile Types:
-       ["water", "3:1 port", "wood port", "brick port", "sheep port"
-        "wheat port", "ore port", "wood", "brick", "wheat", "ore", 
-        "desert"]
+       ["water", "wood", "brick", "wheat", "sheep", "ore", "desert"]
 
     Possible Numbers:
        1-6, 8-12
@@ -111,3 +109,7 @@ class Vertex:
 class Connection:
     def __init__(self, road=None):
         self.road = road
+
+class Port:
+    def __init__(self, port_type):
+        self.port_type = port_type
