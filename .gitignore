@@ -2,13 +2,7 @@
 *.py[cod]
 
 # Ignore pyvenv cruft
-bin
-include
-lib
-share
-man
-.Python
-pyvenv.cfg
+env
 
 # Ignore emacs cruft
 *.~
