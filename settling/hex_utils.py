@@ -72,5 +72,24 @@ def neighbors(hex_coord):
               (-1,0,1), (0,-1,1), (1,-1,0)]
     neighbors = []
     for delta in deltas:
-        neighbors.append(tuple(coord + d for coord, d in zip(hex_coord, delta)))
+        neighbor = tuple(coord + d for coord, d in zip(hex_coord, delta))
+        neighbors.append(neighbor)
     return neighbors
+
+def hexagon_from_ordinal(ordinal_coord):
+    pass
+
+def hexagon_from_rso(rso_coord):
+    pass
+
+def ordinal_from_hexagon(hexagon_coord):
+    pass
+
+def ordinal_from_rso(rso_coord):
+    pass
+
+def rso_from_hexagon(hexagon_coord):
+    pass
+
+def rso_from_ordinal(ordinal_coord):
+    pass
