@@ -77,19 +77,31 @@ def neighbors(hex_coord):
     return neighbors
 
 def hexagon_from_ordinal(ordinal_coord):
+    """Convert from an ordinal to a hexagon coordinate.
+    """
     pass
 
 def hexagon_from_rso(rso_coord):
+    """Convert from a ring spline offset to a hexagon coordinate.
+    """
     pass
 
 def ordinal_from_hexagon(hexagon_coord):
+    """Convert from a hexagon to an ordianl coordinate.
+    """
     pass
 
 def ordinal_from_rso(rso_coord):
+    """Convert from a ring spline offset to an ordinal coordinate.
+    """
     pass
 
 def rso_from_hexagon(hexagon_coord):
+    """Convert from a hexagon to ring spline offset coordinate.
+    """
     pass
 
 def rso_from_ordinal(ordinal_coord):
+    """Convert from an ordinal to a ring spline offset coordinate.
+    """
     pass
