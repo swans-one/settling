@@ -38,7 +38,7 @@ show how they are calculated and related.
             -y     _    +x
               \  /17 \  /      _
                \ \ _ / /   _ /19 \ spline 0
-      spline 4  \/ 6 \/_ / 7 \ _ /
+      spline 4 _\/ 6 \/_ / 7 \ _ /
              / 5 \ _ / 1 \ _ /
        +z____\ _ / 0 \ _ / 8 \ _ ____-z
              / 4 \ _ / 2 \ _ /21 \
