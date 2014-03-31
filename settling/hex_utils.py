@@ -9,8 +9,8 @@ This file establishes three hex grid coordinate systems.
    representing coordinates in the three directions naturally
    associated with the six sides of a hexagon.
 
-3) RSO (Ring Spline Offset -- A system in N3, where coordinates are
-   3-tuples of a ring coordinate, a spline coordinate, and an offset
+3) RSO (Ring Spine Offset -- A system in N3, where coordinates are
+   3-tuples of a ring coordinate, a spine coordinate, and an offset
    coordinate.
 
 These three coordinate systems are each useful for different purposes,
@@ -30,21 +30,21 @@ coordinate systems, as well as some other useful tools for working
 with the coordinate systems.
 
 The following graph, and table gives a number of examples of the
-mapping between ring, spline and offset, and attempts to graphically
+mapping between ring, spine and offset, and attempts to graphically
 show how they are calculated and related.
 
 
                  spl 5
             -y     _    +x
               \  /17 \  /      _
-               \ \ _ / /   _ /19 \ spline 0
-      spline 4 _\/ 6 \/_ / 7 \ _ /
+               \ \ _ / /   _ /19 \ spine 0
+       spine 4 _\/ 6 \/_ / 7 \ _ /
              / 5 \ _ / 1 \ _ /
        +z____\ _ / 0 \ _ / 8 \ _ ____-z
              / 4 \ _ / 2 \ _ /21 \
-    spline 3 \ _ / 3 \ _ / 9 \ _ /
+     spine 3 \ _ / 3 \ _ / 9 \ _ /
                 /\ _ /\  \ _ /
-               /       \     spline 1
+               /       \     spine 1
               /  spl 2  \
             -x          +y
 
@@ -85,7 +85,7 @@ def hexagon_from_ordinal(ordinal_coord):
     return hexagon_coords
 
 def hexagon_from_rso(rso_coord):
-    """Convert from a ring spline offset to a hexagon coordinate.
+    """Convert from a ring spine offset to a hexagon coordinate.
     """
     pass
 
@@ -111,17 +111,17 @@ def ordinal_from_hexagon(hexagon_coord):
     raise ValueError(err_msg.format(MAX_SEARCH))
 
 def ordinal_from_rso(rso_coord):
-    """Convert from a ring spline offset to an ordinal coordinate.
+    """Convert from a ring spine offset to an ordinal coordinate.
     """
     pass
 
 def rso_from_hexagon(hexagon_coord):
-    """Convert from a hexagon to ring spline offset coordinate.
+    """Convert from a hexagon to ring spine offset coordinate.
     """
     pass
 
 def rso_from_ordinal(ordinal_coord):
-    """Convert from an ordinal to a ring spline offset coordinate.
+    """Convert from an ordinal to a ring spine offset coordinate.
     """
     ring = _find_ring(ordinal)
     spine = _find_spine(ordinal, ring)
