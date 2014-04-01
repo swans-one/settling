@@ -80,8 +80,8 @@ def hexagon_from_ordinal(ordinal_coord):
     """Convert from an ordinal to a hexagon coordinate.
     """
     # If the value is not in the cache, compute it explicitly
-    ring, spine, offset = ring_spine_offset_from_ordinal(ordinal)
-    hexagon_coords = hexagon_from_ring_spine_offset(ring, spine, offset)
+    rso = rso_from_ordinal(ordinal_coord)
+    hexagon_coords = hexagon_from_rso(rso)
     return hexagon_coords
 
 def hexagon_from_rso(rso_coord):
@@ -93,8 +93,8 @@ def ordinal_from_hexagon(hexagon_coord):
     """Convert from a hexagon to an ordianl coordinate.
     """
     # First check that the coordinates are valid
-    if sum(hex_coords) != 0:
-        raise ValueError("{0} are not valid hexagon coordinates".format(hex_coords))
+    if sum(hexagon_coord) != 0:
+        raise ValueError("{0} are not valid hexagon coordinates".format(hexagon_coord))
     # Iterate through all the ordinal numbers, comparing to their
     # hexagon coordinates to those given.
     #
@@ -104,7 +104,7 @@ def ordinal_from_hexagon(hexagon_coord):
     current_ordinal = 0
     while current_ordinal < MAX_SEARCH:
         hexagon = hexagon_from_ordinal(current_ordinal)
-        if hexagon == hex_coords:
+        if hexagon == hexagon_coord:
             return current_ordinal
         current_ordinal += 1
     err_msg = "Cannot find coordinates in first {0} ordinals"
@@ -123,9 +123,9 @@ def rso_from_hexagon(hexagon_coord):
 def rso_from_ordinal(ordinal_coord):
     """Convert from an ordinal to a ring spine offset coordinate.
     """
-    ring = _find_ring(ordinal)
-    spine = _find_spine(ordinal, ring)
-    offset = _find_offset(ordinal, ring)
+    ring = _find_ring(ordinal_coord)
+    spine = _find_spine(ordinal_coord, ring)
+    offset = _find_offset(ordinal_coord, ring)
     return ring, spine, offset
 
 
