@@ -80,14 +80,38 @@ def hexagon_from_ordinal(ordinal_coord):
     """Convert from an ordinal to a hexagon coordinate.
     """
     # If the value is not in the cache, compute it explicitly
+    print(ordinal_coord)
     rso = rso_from_ordinal(ordinal_coord)
+    print(rso)
     hexagon_coords = hexagon_from_rso(rso)
+    print(hexagon_coords)
     return hexagon_coords
 
 def hexagon_from_rso(rso_coord):
     """Convert from a ring spine offset to a hexagon coordinate.
     """
-    pass
+    ring, spine, offset = rso_coord
+    ring_1 = [(1,0,-1), (0,1,-1), (-1,1,0), (-1,0,1), (0,-1,1), (1,-1,0)]
+    if ring == 0 and spine == 0 and offset == 0:
+        # We're in the center
+        return (0, 0, 0)
+    elif ring == 1 and offset == 0:
+        # We're in the first ring
+        return ring_1[spine]
+    elif ring > 1 and offset == 0:
+        # We're on a spine
+        return tuple(ring * i for i in ring_1[spine])
+    elif ring > 1 and offset != 0:
+        # We move along the spine until we hit the next spine.
+        move = ring_1[spine]
+        next_rso = (ring - 1,
+                    spine if offset < (ring - 1) else (spine + 1) % 6,
+                    offset if offset < (ring - 1) else 0)
+        next_loc = hexagon_from_rso(next_rso)
+        return tuple(m + l for m, l in zip(move, next_loc))
+    else:
+        err_msg = "{r}, {s}, {o} is not a valid ring, spine, offset."
+        raise ValueError(err_msg.format(r=ring, s=spine, o=offset))
 
 def ordinal_from_hexagon(hexagon_coord):
     """Convert from a hexagon to an ordianl coordinate.
