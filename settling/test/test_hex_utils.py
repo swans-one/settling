@@ -107,7 +107,15 @@ class Test_rso_from_hexagon(unittest.TestCase):
     pass
 
 class Test_rso_from_ordinal(unittest.TestCase):
-    pass
+    def test_returns_triple(self):
+        """A simple test that (ring, spine, offset) is returned.
+
+        The helper functions that go into this are more thoroughly
+        unit tested.
+        """
+        expected = (3, 1, 1)
+        rso = hex_utils.rso_from_ordinal(23)
+        self.assertEqual(rso, expected)
 
 class Test__find_ring(unittest.TestCase):
     pass
