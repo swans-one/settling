@@ -118,7 +118,29 @@ class Test_rso_from_ordinal(unittest.TestCase):
         self.assertEqual(rso, expected)
 
 class Test__find_ring(unittest.TestCase):
-    pass
+    """Test the recursive traversal of the triangular numbers.
+    """
+    def test_ring_zero(self):
+        """Ordinal 0 -> ring 0.
+        """
+        expected_ring = 0
+        ring = hex_utils._find_ring(0)
+        self.assertEqual(ring, expected_ring)
+
+    def test_ring_one(self):
+        """Ordinal 6 -> ring 1.
+        """
+        expected_ring = 1
+        ring = hex_utils._find_ring(6)
+        self.assertEqual(ring, expected_ring)
+
+    def test_ring_four(self):
+        """Ordinal 43 -> ring 4.
+        """
+        expected_ring = 4
+        ring = hex_utils._find_ring(43)
+        self.assertEqual(ring, expected_ring)
+
 
 class Test__find_spine(unittest.TestCase):
     pass
