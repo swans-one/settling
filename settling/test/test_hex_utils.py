@@ -41,7 +41,38 @@ class Test_hexagon_from_ordinal(unittest.TestCase):
         self.assertEqual(hex_utils.hexagon_from_ordinal(36), (3, -1, -2))
 
 class Test_hexagon_from_rso(unittest.TestCase):
-    pass
+    def test_center(self):
+        """Should return (0,0,0)
+        """
+        hex_coord = hex_utils.hexagon_from_rso((0, 0, 0))
+        self.assertEqual(hex_coord, (0,0,0))
+
+    def test_ring_one(self):
+        """If we're on the first ring, return the correct value.
+        """
+        hex_coord = hex_utils.hexagon_from_rso((1, 3, 0))
+        self.assertEqual(hex_coord, (-1,0,1))
+
+    def test_on_spine(self):
+        """Offset == 0, (on spine) should return correctly
+        """
+        hex_coord = hex_utils.hexagon_from_rso((3, 4, 0))
+        self.assertEqual(hex_coord, (0,-3,3))
+
+    def test_with_offset(self):
+        """Offset > 0 (off spine) should return correctly
+        """
+        hex_coord = hex_utils.hexagon_from_rso((3, 0, 1))
+        self.assertEqual(hex_coord, (2,1,-3))
+
+    def test_wrap_splines(self):
+        """Spine of 5, should be handled correctly.
+
+        This could potentially be an issue because there is no spine 6.
+        """
+        hex_coord = hex_utils.hexagon_from_rso((3, 5, 2))
+        self.assertEqual(hex_coord, (3,-1,-2))
+
 
 class Test_ordinal_from_hexagon(unittest.TestCase):
     def test_works(self):
