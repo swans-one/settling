@@ -143,7 +143,27 @@ class Test__find_ring(unittest.TestCase):
 
 
 class Test__find_spine(unittest.TestCase):
-    pass
+    def test_ring_zero(self):
+        """Spine should be zero on ordinal zero, ring zero.
+        """
+        expected_spine = 0
+        spine = hex_utils._find_spine(0, 0)
+        self.assertEqual(spine, expected_spine)
+
+    def test_ring_one(self):
+        expected_spine = 2
+        spine = hex_utils._find_spine(3, 1)
+        self.assertEqual(spine, expected_spine)
+
+    def test_ring_three(self):
+        expected_spine = 0
+        spine = hex_utils._find_spine(19, 3)
+        self.assertEqual(spine, expected_spine)
+
+    def test_ring_four(self):
+        expected_spine = 5
+        spine = hex_utils._find_spine(60, 4)
+        self.assertEqual(spine, expected_spine)
 
 class Test__find_offset(unittest.TestCase):
     pass
