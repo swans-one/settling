@@ -166,7 +166,20 @@ class Test__find_spine(unittest.TestCase):
         self.assertEqual(spine, expected_spine)
 
 class Test__find_offset(unittest.TestCase):
-    pass
+    def test_ring_zero(self):
+        expected_offset = 0
+        offset = hex_utils._find_offset(0, 0)
+        self.assertEqual(offset, expected_offset)
+
+    def test_ring_4_offset_zero(self):
+        expected_offset = 0
+        offset = hex_utils._find_offset(37, 4)
+        self.assertEqual(offset, expected_offset)
+
+    def test_ring_4_offset_three(self):
+        expected_offset = 3
+        offset = hex_utils._find_offset(60, 4)
+        self.assertEqual(offset, expected_offset)
 
 class Test__tiles_in_ring(unittest.TestCase):
     pass
