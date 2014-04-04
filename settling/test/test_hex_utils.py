@@ -182,4 +182,10 @@ class Test__find_offset(unittest.TestCase):
         self.assertEqual(offset, expected_offset)
 
 class Test__tiles_in_ring(unittest.TestCase):
-    pass
+    def test_ring_zero(self):
+        tiles = hex_utils._tiles_in_ring(0)
+        self.assertEqual(tiles, 1)
+
+    def test_ring_five(self):
+        tiles = hex_utils._tiles_in_ring(5)
+        self.assertEqual(tiles, 30)
