@@ -80,11 +80,8 @@ def hexagon_from_ordinal(ordinal_coord):
     """Convert from an ordinal to a hexagon coordinate.
     """
     # If the value is not in the cache, compute it explicitly
-    print(ordinal_coord)
     rso = rso_from_ordinal(ordinal_coord)
-    print(rso)
     hexagon_coords = hexagon_from_rso(rso)
-    print(hexagon_coords)
     return hexagon_coords
 
 def hexagon_from_rso(rso_coord):
