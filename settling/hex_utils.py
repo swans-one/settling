@@ -34,7 +34,7 @@ mapping between ring, spine and offset, and attempts to graphically
 show how they are calculated and related.
 
 
-                 spl 5
+                spine 5
             -y     _    +x
               \  /17 \  /      _
                \ \ _ / /   _ /19 \ spine 0
@@ -45,7 +45,7 @@ show how they are calculated and related.
      spine 3 \ _ / 3 \ _ / 9 \ _ /
                 /\ _ /\  \ _ /
                /       \     spine 1
-              /  spl 2  \
+              /  sp. 2  \
             -x          +y
 
     |-----+-----------+--------------|
