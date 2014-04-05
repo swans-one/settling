@@ -141,7 +141,9 @@ def ordinal_from_rso(rso_coord):
 def rso_from_hexagon(hexagon_coord):
     """Convert from a hexagon to ring spine offset coordinate.
     """
-    pass
+    ordinal_coord = ordinal_from_hexagon(hexagon_coord)
+    rso_coord = rso_from_ordinal(ordinal_coord)
+    return rso_coord
 
 def rso_from_ordinal(ordinal_coord):
     """Convert from an ordinal to a ring spine offset coordinate.
