@@ -101,10 +101,22 @@ class Test_ordinal_from_hexagon(unittest.TestCase):
         self.assertEqual(hex_utils.ordinal_from_hexagon((3, -1, -2)), 36)
 
 class Test_ordinal_from_rso(unittest.TestCase):
-    pass
+    def test_works(self):
+        """Test that the correct ordinal is returned from the rso.
+        """
+        start_rso = (3, 0, 2)
+        expected_ordinal = 21
+        result_ordinal = hex_utils.ordinal_from_rso(start_rso)
+        self.assertEqual(result_ordinal, expected_ordinal)
 
 class Test_rso_from_hexagon(unittest.TestCase):
-    pass
+    def test_works(self):
+        """Test that the correct rso is returned from the hexagon.
+        """
+        start_hexagon = (0, -1, 1)
+        expected_rso = (1, 4, 0)
+        result_rso = hex_utils.rso_from_hexagon(start_hexagon)
+        self.assertEqual(result_rso, expected_rso)
 
 class Test_rso_from_ordinal(unittest.TestCase):
     def test_returns_triple(self):
