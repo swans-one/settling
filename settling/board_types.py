@@ -12,6 +12,8 @@ board.
 
 from abc import ABCMeta, abstractmethod
 
+import hex_utils
+
 class BoardType(metaclass=ABCMeta):
     @abstractmethod
     def hexagon_from_ordinal(self, ordinal):
@@ -41,115 +43,25 @@ class StandardBoardType(BoardType):
         self.cached_ordinal_from_hexagon = {}
         self.cached_hexagon_from_ordinal = {}
 
-    def ordinal_from_hexagon(self, hex_coords):
+    def ordinal_from_hexagon(self, hexagon_coord):
         """Give the ordinal location of a tile given its hexagon coordinates.
         """
-        # First check that the coordinates are valid
-        if sum(hex_coords) != 0:
-            raise ValueError("{0} are not valid hexagon coordinates".format(hex_coords))
-
-        # Go to the cache before iterating
-        if hex_coords in self.cached_ordinal_from_hexagon:
-            return self.cached_ordinal_from_hexagon[hex_coords]
-
-        # If the cache fails, iterate through all the ordinal numbers,
-        # comparing to their hexagon coordinates to those given.
-        #
-        # This method ensures that the ordering is consistent in both
-        # directions.
-        MAX_SEARCH = 1000
-        current_ordinal = 0
-        while current_ordinal < MAX_SEARCH:
-            hexagon = self.hexagon_from_ordinal(current_ordinal)
-            if hexagon == hex_coords:
-                # cache computed value
-                self.cached_ordinal_from_hexagon[hex_coords] = current_ordinal
-                return current_ordinal
-            current_ordinal += 1
-        err_msg = "Cannot find coordinates in first {0} ordinals"
-        raise ValueError(err_msg.format(MAX_SEARCH))
-
-    def hexagon_from_ordinal(self, ordinal):
-        # Check the cache before computing
-        if ordinal in self.cached_hexagon_from_ordinal:
-            return self.cached_hexagon_from_ordinal[ordinal]
-
-        # If the value is not in the cache, compute it explicitly
-        ring, spine, offset = self.ring_spine_offset_from_ordinal(ordinal)
-        hexagon_coords = self.hexagon_from_ring_spine_offset(ring, spine, offset)
-
-        #cache computed value
-        self.cached_hexagon_from_ordinal[ordinal] = hexagon_coords
-        return hexagon_coords
-
-    def ring_spine_offset_from_ordinal(self, ordinal):
-        ring = self._find_ring(ordinal)
-        spine = self._find_spine(ordinal, ring)
-        offset = self._find_offset(ordinal, ring)
-        return ring, spine, offset
-
-    def _find_ring(self, ordinal, ring_so_far=0):
-        """Recursively traverses triangular numbers.
-        """
-        check = ordinal - (6 * ring_so_far)
-        if check <= 0:
-            return ring_so_far
+        # Go to the cache before calling the library function.
+        if hexagon_coord in self.cached_ordinal_from_hexagon:
+            ordinal_coord = self.cached_ordinal_from_hexagon[hexagon_coord]
+        # If missing, compute it and  cache the value.
         else:
-            return self._find_ring(check, ring_so_far + 1)
+            ordinal_coord = hex_utils.ordinal_from_hexagon(hexagon_coord)
+            self.cached_ordinal_from_hexagon[hexagon_coord] = ordinal_coord
+        return ordinal_coord
 
-    def _find_spine(self, ordinal, ring):
-        if ordinal == 0:
-            return 0
-        tiles_before_ring = sum(self._tiles_in_ring(r) for r in range(ring))
-        ordinal_in_ring = ordinal - tiles_before_ring
-        tiles_per_spine = self._tiles_in_ring(ring) // 6
-        spine = ordinal_in_ring // tiles_per_spine
-        return spine
-
-    def _find_offset(self, ordinal, ring):
-        if ordinal == 0:
-            return 0
-        tiles_before_ring = sum(self._tiles_in_ring(r) for r in range(ring))
-        ordinal_in_ring = ordinal - tiles_before_ring
-        tiles_per_spine = self._tiles_in_ring(ring) // 6
-        offset = ordinal_in_ring % tiles_per_spine
-        return offset
-
-    def _tiles_in_ring(self, ring):
-        return 1 if ring == 0 else ring * 6
-
-    def hexagon_from_ring_spine_offset(self, ring, spine, offset):
-        """Converts from a ring, spine and offset into hexagon coords.
-
-        - ring is the number of tiles to the center along the shortest path.
-
-        - spine is the nearest counter-clockwise "spoke" from the center.
-
-        - offset is the number of tiles clockwise from the spine.
-
-        This method is a helper method to make the implementation of
-        hexagon_from_ordinal clearer.
-        """
-        ring_1 = [(1,0,-1), (0,1,-1), (-1,1,0), (-1,0,1), (0,-1,1), (1,-1,0)]
-        if ring == 0 and spine == 0 and offset == 0:
-            # We're in the center
-            return (0, 0, 0)
-        elif ring == 1 and offset == 0:
-            # We're in the first ring
-            return ring_1[spine]
-        elif ring > 1 and offset == 0:
-            # We're on a spine
-            return tuple(ring * i for i in ring_1[spine])
-        elif ring > 1 and offset != 0:
-            # We move along the spine until we hit the next spine.
-            move = ring_1[spine]
-            next_loc = self.hexagon_from_ring_spine_offset(
-                ring = ring - 1,
-                spine = spine if offset < (ring - 1) else (spine + 1) % 6,
-                offset = offset if offset < (ring - 1) else 0,
-            )
-            return tuple(m + l for m, l in zip(move, next_loc))
+    def hexagon_from_ordinal(self, ordinal_coord):
+        # Go to the cache before calling the library function.
+        if ordinal_coord in self.cached_hexagon_from_ordinal:
+            hexagon_coord = self.cached_hexagon_from_ordinal[ordinal_coord]
+        # If missing, compute it and  cache the value.
         else:
-            err_msg = "{r}, {s}, {o} is not a valid ring, spine, offset."
-            raise ValueError(err_msg.format(r=ring, s=spine, o=offset))
+            hexagon_coord = hex_utils.hexagon_from_ordinal(ordinal_coord)
+            self.cached_hexagon_from_ordinal[ordinal_coord] = hexagon_coord
+        return hexagon_coord
 
