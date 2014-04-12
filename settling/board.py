@@ -19,10 +19,15 @@ DEFAULT_PORT_ORDER = ("3:1 port", "3:1 port", "brick port", "wood port",
                       "sheep port")
 
 TILES = list(itertools.chain(
-    ["wood"] * 4, ["brick"] * 3, ["wheat"] * 4, ["sheep"] * 4, ["ore"] * 3, ["desert"]
+    ["wood"] * 4,
+    ["brick"] * 3,
+    ["wheat"] * 4,
+    ["sheep"] * 4,
+    ["ore"] * 3,
+    ["desert"]
 ))
 
-NUMBERS = [2, 12] + list(range(3,12)) * 2
+NUMBERS = [2, 12] + list(range(3, 12)) * 2
 
 PORTS = ["wood port", "brick port", "wheat port", "sheep port", "ore port",
          "3:1 port", "3:1 port", "3:1 port", "3:1 port"]
@@ -35,9 +40,10 @@ def random_board():
     number_order = random.sample(NUMBERS, len(NUMBERS))
     return Board(tile_order, number_order, port_order)
 
+
 class Board:
     def __init__(self, tile_order, number_order, port_order,
-                 board_type = StandardBoardType):
+                 board_type=StandardBoardType):
         """Set up a board from order of tiles/numbers/port.
 
         Since a board is completely determined by the arrangement of
@@ -61,7 +67,9 @@ class Board:
         self.tile_order = list(tile_order)
         self.port_order = list(port_order)
         self.number_order = list(number_order)
-        self.graph = self._set_up(self.tile_order, self.port_order, self.number_order)
+        self.graph = self._set_up(
+            self.tile_order, self.port_order, self.number_order
+        )
 
     def _set_up(self, tile_order, port_order, number_order):
         board_graph = nx.Graph()
@@ -102,13 +110,16 @@ class Tile:
         self.number = number
         self.has_robber = has_robber
 
+
 class Vertex:
     def __init__(self, settlement=None):
         self.settlement = settlement
 
+
 class Connection:
     def __init__(self, road=None):
         self.road = road
+
 
 class Port:
     def __init__(self, port_type):

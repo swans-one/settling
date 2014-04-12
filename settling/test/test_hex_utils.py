@@ -2,22 +2,24 @@ import unittest
 
 import hex_utils
 
+
 class Test_neighbors(unittest.TestCase):
     def test_origin_neighbors(self):
         """The neighbors of the origin should be equal to the delta.
         """
-        deltas = [(1,0,-1), (0,1,-1), (-1,1,0),
-                  (-1,0,1), (0,-1,1), (1,-1,0)]
+        deltas = [(1, 0, -1), (0, 1, -1), (-1, 1, 0),
+                  (-1, 0, 1), (0, -1, 1), (1, -1, 0)]
         neighbors = hex_utils.neighbors((0, 0, 0))
         self.assertEqual(neighbors, deltas)
 
     def test_a_couple(self):
         """Test that a couple points are in the neighbors.
         """
-        neighbors = hex_utils.neighbors((1,1,-2))
-        self.assertIn((2,1,-3), neighbors)
-        self.assertIn((1,2,-3), neighbors)
-        self.assertIn((1,0,-1), neighbors)
+        neighbors = hex_utils.neighbors((1, 1, -2))
+        self.assertIn((2, 1, -3), neighbors)
+        self.assertIn((1, 2, -3), neighbors)
+        self.assertIn((1, 0, -1), neighbors)
+
 
 class Test_hexagon_from_ordinal(unittest.TestCase):
     def test_works(self):
@@ -40,30 +42,31 @@ class Test_hexagon_from_ordinal(unittest.TestCase):
         self.assertEqual(hex_utils.hexagon_from_ordinal(36), (3, -1, -2))
         self.assertEqual(hex_utils.hexagon_from_ordinal(36), (3, -1, -2))
 
+
 class Test_hexagon_from_rso(unittest.TestCase):
     def test_center(self):
         """Should return (0,0,0)
         """
         hex_coord = hex_utils.hexagon_from_rso((0, 0, 0))
-        self.assertEqual(hex_coord, (0,0,0))
+        self.assertEqual(hex_coord, (0, 0, 0))
 
     def test_ring_one(self):
         """If we're on the first ring, return the correct value.
         """
         hex_coord = hex_utils.hexagon_from_rso((1, 3, 0))
-        self.assertEqual(hex_coord, (-1,0,1))
+        self.assertEqual(hex_coord, (-1, 0, 1))
 
     def test_on_spine(self):
         """Offset == 0, (on spine) should return correctly
         """
         hex_coord = hex_utils.hexagon_from_rso((3, 4, 0))
-        self.assertEqual(hex_coord, (0,-3,3))
+        self.assertEqual(hex_coord, (0, -3, 3))
 
     def test_with_offset(self):
         """Offset > 0 (off spine) should return correctly
         """
         hex_coord = hex_utils.hexagon_from_rso((3, 0, 1))
-        self.assertEqual(hex_coord, (2,1,-3))
+        self.assertEqual(hex_coord, (2, 1, -3))
 
     def test_wrap_splines(self):
         """Spine of 5, should be handled correctly.
@@ -71,7 +74,7 @@ class Test_hexagon_from_rso(unittest.TestCase):
         This could potentially be an issue because there is no spine 6.
         """
         hex_coord = hex_utils.hexagon_from_rso((3, 5, 2))
-        self.assertEqual(hex_coord, (3,-1,-2))
+        self.assertEqual(hex_coord, (3, -1, -2))
 
 
 class Test_ordinal_from_hexagon(unittest.TestCase):
@@ -100,6 +103,7 @@ class Test_ordinal_from_hexagon(unittest.TestCase):
         self.assertEqual(hex_utils.ordinal_from_hexagon((3, -1, -2)), 36)
         self.assertEqual(hex_utils.ordinal_from_hexagon((3, -1, -2)), 36)
 
+
 class Test_ordinal_from_rso(unittest.TestCase):
     def test_works(self):
         """Test that the correct ordinal is returned from the rso.
@@ -109,6 +113,7 @@ class Test_ordinal_from_rso(unittest.TestCase):
         result_ordinal = hex_utils.ordinal_from_rso(start_rso)
         self.assertEqual(result_ordinal, expected_ordinal)
 
+
 class Test_rso_from_hexagon(unittest.TestCase):
     def test_works(self):
         """Test that the correct rso is returned from the hexagon.
@@ -117,6 +122,7 @@ class Test_rso_from_hexagon(unittest.TestCase):
         expected_rso = (1, 4, 0)
         result_rso = hex_utils.rso_from_hexagon(start_hexagon)
         self.assertEqual(result_rso, expected_rso)
+
 
 class Test_rso_from_ordinal(unittest.TestCase):
     def test_returns_triple(self):
@@ -128,6 +134,7 @@ class Test_rso_from_ordinal(unittest.TestCase):
         expected = (3, 1, 1)
         rso = hex_utils.rso_from_ordinal(23)
         self.assertEqual(rso, expected)
+
 
 class Test__find_ring(unittest.TestCase):
     """Test the recursive traversal of the triangular numbers.
@@ -177,6 +184,7 @@ class Test__find_spine(unittest.TestCase):
         spine = hex_utils._find_spine(60, 4)
         self.assertEqual(spine, expected_spine)
 
+
 class Test__find_offset(unittest.TestCase):
     def test_ring_zero(self):
         expected_offset = 0
@@ -192,6 +200,7 @@ class Test__find_offset(unittest.TestCase):
         expected_offset = 3
         offset = hex_utils._find_offset(60, 4)
         self.assertEqual(offset, expected_offset)
+
 
 class Test__tiles_in_ring(unittest.TestCase):
     def test_ring_zero(self):
