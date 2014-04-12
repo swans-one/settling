@@ -7,5 +7,5 @@ install:
 before_script:
   - flake8 . --max-line-length=120 --max-complexity=10 --exclude='env,migrations,*.egg,docs'
 script:
-  - coverage run --source='localized_recurrence' --branch nosetest
+  - coverage run --source='localized_recurrence' --branch nosetests
   - coverage report --fail-under=80 --show-missing
