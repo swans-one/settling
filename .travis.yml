@@ -3,7 +3,7 @@ python:
   - "3.3"
 install:
   - pip install -q coverage flake8
-  - pip instal; -r requirements.txt
+  - pip install -r requirements.txt
 before_script:
   - flake8 . --max-line-length=120 --max-complexity=10 --exclude='env,migrations,*.egg,docs'
 script:
