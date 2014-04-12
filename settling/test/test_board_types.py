@@ -34,6 +34,7 @@ class Test_StandardBoardType_ordinal_from_hexagon(unittest.TestCase):
         self.assertEqual(self.bt.ordinal_from_hexagon((3, -1, -2)), 36)
         self.assertEqual(self.bt.ordinal_from_hexagon((3, -1, -2)), 36)
 
+
 class Test_StandardBoardType_hexagon_from_ordinal(unittest.TestCase):
     def setUp(self):
         """Create an instance of the standard board type.
@@ -59,4 +60,3 @@ class Test_StandardBoardType_hexagon_from_ordinal(unittest.TestCase):
         """
         self.assertEqual(self.bt.hexagon_from_ordinal(36), (3, -1, -2))
         self.assertEqual(self.bt.hexagon_from_ordinal(36), (3, -1, -2))
-
