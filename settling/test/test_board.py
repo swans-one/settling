@@ -4,12 +4,14 @@ import networkx as nx
 
 import board
 
+
 class Test_random_board(unittest.TestCase):
     def test_returns_board(self):
         """We just check that a board object is returned
         """
         random_board = board.random_board()
         self.assertIsInstance(random_board, board.Board)
+
 
 class Test_Board__set_up(unittest.TestCase):
     def setUp(self):
