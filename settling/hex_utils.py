@@ -67,14 +67,16 @@ show how they are calculated and related.
     |-----+-----------+--------------|
 """
 
+
 def neighbors(hex_coord):
-    deltas = [(1,0,-1), (0,1,-1), (-1,1,0),
-              (-1,0,1), (0,-1,1), (1,-1,0)]
+    deltas = [(1, 0, -1), (0, 1, -1), (-1, 1, 0),
+              (-1, 0, 1), (0, -1, 1), (1, -1, 0)]
     neighbors = []
     for delta in deltas:
         neighbor = tuple(coord + d for coord, d in zip(hex_coord, delta))
         neighbors.append(neighbor)
     return neighbors
+
 
 def hexagon_from_ordinal(ordinal_coord):
     """Convert from an ordinal to a hexagon coordinate.
@@ -84,11 +86,13 @@ def hexagon_from_ordinal(ordinal_coord):
     hexagon_coords = hexagon_from_rso(rso)
     return hexagon_coords
 
+
 def hexagon_from_rso(rso_coord):
     """Convert from a ring spine offset to a hexagon coordinate.
     """
     ring, spine, offset = rso_coord
-    ring_1 = [(1,0,-1), (0,1,-1), (-1,1,0), (-1,0,1), (0,-1,1), (1,-1,0)]
+    ring_1 = [(1, 0, -1), (0, 1, -1), (-1, 1, 0),
+              (-1, 0, 1), (0, -1, 1), (1, -1, 0)]
     if ring == 0 and spine == 0 and offset == 0:
         # We're in the center
         return (0, 0, 0)
@@ -110,12 +114,14 @@ def hexagon_from_rso(rso_coord):
         err_msg = "{r}, {s}, {o} is not a valid ring, spine, offset."
         raise ValueError(err_msg.format(r=ring, s=spine, o=offset))
 
+
 def ordinal_from_hexagon(hexagon_coord):
     """Convert from a hexagon to an ordianl coordinate.
     """
     # First check that the coordinates are valid
     if sum(hexagon_coord) != 0:
-        raise ValueError("{0} are not valid hexagon coordinates".format(hexagon_coord))
+        msg = "{0} are not valid hexagon coordinates"
+        raise ValueError(msg.format(hexagon_coord))
     # Iterate through all the ordinal numbers, comparing to their
     # hexagon coordinates to those given.
     #
@@ -131,6 +137,7 @@ def ordinal_from_hexagon(hexagon_coord):
     err_msg = "Cannot find coordinates in first {0} ordinals"
     raise ValueError(err_msg.format(MAX_SEARCH))
 
+
 def ordinal_from_rso(rso_coord):
     """Convert from a ring spine offset to an ordinal coordinate.
     """
@@ -138,12 +145,14 @@ def ordinal_from_rso(rso_coord):
     ordinal_coord = ordinal_from_hexagon(hexagon_coord)
     return ordinal_coord
 
+
 def rso_from_hexagon(hexagon_coord):
     """Convert from a hexagon to ring spine offset coordinate.
     """
     ordinal_coord = ordinal_from_hexagon(hexagon_coord)
     rso_coord = rso_from_ordinal(ordinal_coord)
     return rso_coord
+
 
 def rso_from_ordinal(ordinal_coord):
     """Convert from an ordinal to a ring spine offset coordinate.
@@ -163,6 +172,7 @@ def _find_ring(ordinal, ring_so_far=0):
     else:
         return _find_ring(check, ring_so_far + 1)
 
+
 def _find_spine(ordinal, ring):
     if ordinal == 0:
         return 0
@@ -172,6 +182,7 @@ def _find_spine(ordinal, ring):
     spine = ordinal_in_ring // tiles_per_spine
     return spine
 
+
 def _find_offset(ordinal, ring):
     if ordinal == 0:
         return 0
@@ -180,6 +191,7 @@ def _find_offset(ordinal, ring):
     tiles_per_spine = _tiles_in_ring(ring) // 6
     offset = ordinal_in_ring % tiles_per_spine
     return offset
+
 
 def _tiles_in_ring(ring):
     return 1 if ring == 0 else ring * 6
