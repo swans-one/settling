@@ -3,7 +3,7 @@ import itertools
 
 import networkx as nx
 
-from board_types import StandardBoardType
+from board_geometry import StandardBoard
 
 DEFAULT_TILE_ORDER = ("wheat", "sheep", "wheat",
                       "sheep", "brick", "wood", "ore",
@@ -43,7 +43,7 @@ def random_board():
 
 class Board:
     def __init__(self, tile_order, number_order, port_order,
-                 board_type=StandardBoardType):
+                 board_geometry=StandardBoard):
         """Set up a board from order of tiles/numbers/port.
 
         Since a board is completely determined by the arrangement of
