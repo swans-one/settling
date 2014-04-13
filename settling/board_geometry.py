@@ -15,7 +15,7 @@ from abc import ABCMeta, abstractmethod
 import hex_utils
 
 
-class BoardType(metaclass=ABCMeta):
+class BoardGeometry(metaclass=ABCMeta):
     @abstractmethod
     def hexagon_from_ordinal(self, ordinal):
         """Return a class defined hexagon coordinate given an ordinal.
@@ -29,7 +29,7 @@ class BoardType(metaclass=ABCMeta):
         pass
 
 
-class StandardBoardType(BoardType):
+class StandardBoard(BoardGeometry):
     """The standard 3-4 player catan board.
     """
     def __init__(self):
