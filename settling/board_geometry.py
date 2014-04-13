@@ -12,7 +12,7 @@ board.
 
 from abc import ABCMeta, abstractmethod
 
-import hex_utils
+import hexagon_utils as hx
 
 
 class BoardGeometry(metaclass=ABCMeta):
@@ -53,7 +53,7 @@ class StandardBoard(BoardGeometry):
             ordinal_coord = self.cached_ordinal_from_hexagon[hexagon_coord]
         # If missing, compute it and  cache the value.
         else:
-            ordinal_coord = hex_utils.ordinal_from_hexagon(hexagon_coord)
+            ordinal_coord = hx.ordinal_from_hexagon(hexagon_coord)
             self.cached_ordinal_from_hexagon[hexagon_coord] = ordinal_coord
         return ordinal_coord
 
@@ -63,6 +63,6 @@ class StandardBoard(BoardGeometry):
             hexagon_coord = self.cached_hexagon_from_ordinal[ordinal_coord]
         # If missing, compute it and  cache the value.
         else:
-            hexagon_coord = hex_utils.hexagon_from_ordinal(ordinal_coord)
+            hexagon_coord = hx.hexagon_from_ordinal(ordinal_coord)
             self.cached_hexagon_from_ordinal[ordinal_coord] = hexagon_coord
         return hexagon_coord
