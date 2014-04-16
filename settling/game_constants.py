@@ -30,11 +30,5 @@ STANDARD_NUMBER_ORDER = (
     9, 10, 8, 12, 5, 4, 3, 11, 6, 11, 9, 6, 4, 3, 10, 2, 8, 5
 )
 
+# TODO: turn this into a real object
 STANDARD_PORT_MAP = ()
-
-DEFAULT_PORT_ORDER = ("3:1 port", "3:1 port", "brick port", "wood port",
-                      "3:1 port", "wheat port", "ore port", "3:1 port",
-                      "sheep port")
-
-PORTS = ["wood port", "brick port", "wheat port", "sheep port", "ore port",
-         "3:1 port", "3:1 port", "3:1 port", "3:1 port"]
