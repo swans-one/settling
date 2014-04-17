@@ -60,3 +60,25 @@ class Test_StandardBoard_hexagon_from_ordinal(unittest.TestCase):
         """
         self.assertEqual(self.geometry.hexagon_from_ordinal(36), (3, -1, -2))
         self.assertEqual(self.geometry.hexagon_from_ordinal(36), (3, -1, -2))
+
+
+class Test_StandardBoard_hexagon_neighbors(unittest.TestCase):
+    def setUp(self):
+        """Create an instance of the standard board type.
+        """
+        self.geometry = board_geometry.StandardBoard()
+
+    def test_center_neighbors(self):
+        """All surrounding neighbors should be included.
+        """
+        neighbors = self.geometry.hexagon_neighbors((0, 0, 0))
+        expected_neighbors = [(1, 0, -1), (0, 1, -1), (-1, 1, 0),
+                              (-1, 0, 1), (0, -1, 1), (1, -1, 0)]
+        self.assertEqual(neighbors, expected_neighbors)
+
+    def test_edge_neighbors(self):
+        """Only the three nearby neighbors should be included.
+        """
+        neighbors = self.geometry.hexagon_neighbors((3, 0, -3))
+        expected_neighbors = [(2, 1, -3), (2, 0, -2), (3, -1, -2)]
+        self.assertEqual(neighbors, expected_neighbors)
