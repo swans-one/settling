@@ -1,7 +1,7 @@
 """References for game rule constants.
 
 This module provides a number of objects and collections that make it
-easier to encode game rules. 
+easier to encode game rules.
 
 Any object or colleciton defined in this module should be immutable so
 that a consumer of this module cannot affect game behavior by

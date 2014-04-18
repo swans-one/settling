@@ -2,6 +2,7 @@ import unittest
 
 import game_constants
 
+
 class Test_Standards(unittest.TestCase):
     """Do a double check that the game rules are reflected in the constant
     objects.

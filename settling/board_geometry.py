@@ -33,6 +33,7 @@ class BoardGeometry(metaclass=ABCMeta):
         """
         pass
 
+
 class StandardBoard(BoardGeometry):
     """The standard 3-4 player catan board.
 
