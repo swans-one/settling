@@ -17,7 +17,7 @@ def random_standard_board():
         len(game_constants.STANDARD_NUMBER_ORDER)
     )
     port_order = game_constants.STANDARD_PORT_MAP
-    return Board(tile_order, number_order, port_order, StandardBoard)
+    return Board(tile_order, number_order, port_order, StandardBoard())
 
 
 class Board:
@@ -43,8 +43,9 @@ class Board:
         connections and then a connection with a port.
         """
         self._tile_order = tile_order
-        self._port_map = port_map
         self._number_order = number_order
+        self._port_map = port_map
+        self._board_geometry = board_geometry
         self._graph = self._set_up(
             self._tile_order, self._port_map, self._number_order
         )
@@ -55,15 +56,30 @@ class Board:
         tiles = []
         for tile in tile_order:
             if tile in game_constants.RESOURCE_TILE_TYPES:
-                print(tile, number_index, number_order[number_index])
                 # Resource tiles have a number
                 tiles.append(Tile(tile, number_order[number_index]))
                 number_index += 1
             else:
                 # Non-resource tiles have no number.
                 tiles.append(Tile(tile, None))
-        board_graph.add_nodes_from(tiles)
+        board_graph = self._connect_tiles(tiles, board_graph)
         return board_graph
+
+    def _connect_tiles(self, tiles, graph):
+        graph.add_nodes_from(tiles)
+        for i, tile in enumerate(tiles):
+            board_geo = self._board_geometry
+            hexagon_coord = board_geo.hexagon_from_ordinal(i)
+            tile_neighbors = board_geo.hexagon_neighbors(hexagon_coord)
+            connected = zip([tile] * len(tile_neighbors), tile_neighbors)
+            graph.add_edges_from(connected)
+        return graph
+
+    def _create_verticies(self, graph):
+        pass
+
+    def _create_connections(self, graph):
+        pass
 
     def add_road(self):
         pass
@@ -73,6 +89,7 @@ class Board:
 
     def upgrade_settlement(self):
         pass
+
 
 class Tile:
     """
