@@ -39,6 +39,7 @@ class BoardGeometry(metaclass=ABCMeta):
         """
         pass
 
+
 class StandardBoard(BoardGeometry):
     """The standard 3-4 player catan board.
 
@@ -56,7 +57,7 @@ class StandardBoard(BoardGeometry):
         """
         self.cached_ordinal_from_hexagon = {}
         self.cached_hexagon_from_ordinal = {}
-        self.max_ordinal = 36 # 36 is max ordinal for 37 tiles
+        self.max_ordinal = 36     # 36 is max ordinal for 37 tiles
 
     def ordinal_from_hexagon(self, hexagon_coord):
         """Give the ordinal location of a tile given its hexagon coordinates.
