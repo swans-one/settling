@@ -96,11 +96,6 @@ class Vertex:
         self.settlement = settlement
 
 
-class Connection:
-    def __init__(self, road=None):
-        self.road = road
-
-
 class Port:
     def __init__(self, port_type):
         self.port_type = port_type
