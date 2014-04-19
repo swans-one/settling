@@ -22,25 +22,16 @@ def random_standard_board():
 
 class Board:
     def __init__(self, tile_order, number_order, port_map, board_geometry):
-        """Set up a board from order of tiles/numbers/port.
+        """Set up a board from order of tiles/numbers/port/geometry.
 
         Since a board is completely determined by the arrangement of
-        tiles, numbers, and ports we only require that these be passed
-        in as lists.
+        tiles, numbers, ports and the shape of the board, these
+        are the requirements to initialize a board.
 
-        Tile order is defined to be five rows of tiles, where the i'th
-        row has [3, 4, 5, 4, 3] tiles in it respectively. Flattening
-        this left to right, top to bottom gives the one dimensional
-        tile order.
-
-        Number order is defined in the same way as tile order, but the
-        list is shorter in length by one, since the desert, wherever
-        it is, is ommitted from the list of numbers.
-
-        Port order is defined clockwise from the top-left port. This
-        port is on the third connection from the
-        top-left-vertex. Proceeding from this edge there are two blank
-        connections and then a connection with a port.
+        The layout of the board is handled by the board_geometry
+        methods. The role of this class is to provide simple views
+        into the board and to support the addition of roads and
+        settlements/cities.
         """
         self._tile_order = tile_order
         self._number_order = number_order
@@ -49,6 +40,7 @@ class Board:
         self._graph = self._set_up(
             self._tile_order, self._port_map, self._number_order
         )
+        self._vertices = {}
 
     def _set_up(self, tile_order, port_order, number_order):
         board_graph = nx.Graph()
@@ -74,12 +66,6 @@ class Board:
             connected = zip([tile] * len(tile_neighbors), tile_neighbors)
             graph.add_edges_from(connected)
         return graph
-
-    def _create_verticies(self, graph):
-        pass
-
-    def _create_connections(self, graph):
-        pass
 
     def add_road(self):
         pass

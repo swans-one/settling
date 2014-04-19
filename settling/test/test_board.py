@@ -52,9 +52,9 @@ class Test_Board__connect_tiles(unittest.TestCase):
         out_graph = self.board._connect_tiles(
             self.board, input_tiles, input_graph
         )
-        self.assertTrue(('a', 'd') in out_graph.edges()
-                        or ('d', 'a') in out_graph.edges())
-        self.assertTrue(('b', 'd') in out_graph.edges()
-                        or ('d', 'b') in out_graph.edges())
-        self.assertTrue(('c', 'd') in out_graph.edges()
-                        or ('d', 'c') in out_graph.edges())
+        self.assertTrue(
+            ('a', 'd') in out_graph.edges() or ('d', 'a') in out_graph.edges())
+        self.assertTrue(
+            ('b', 'd') in out_graph.edges() or ('d', 'b') in out_graph.edges())
+        self.assertTrue(
+            ('c', 'd') in out_graph.edges() or ('d', 'c') in out_graph.edges())
