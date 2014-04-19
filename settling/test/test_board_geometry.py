@@ -82,3 +82,37 @@ class Test_StandardBoard_hexagon_neighbors(unittest.TestCase):
         neighbors = self.geometry.hexagon_neighbors((3, 0, -3))
         expected_neighbors = [(2, 1, -3), (2, 0, -2), (3, -1, -2)]
         self.assertEqual(neighbors, expected_neighbors)
+
+
+class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
+    def setUp(self):
+        """Create an instance fo the standard boad type.
+        """
+        self.geometry = board_geometry.StandardBoard()
+
+    def test_center_zero(self):
+        """Test vertex_synonyms working as expected.
+        """
+        hexagon = (0, 0, 0)
+        vertex = 0
+        synonyms = self.geometry.vertex_synonyms(hexagon, vertex)
+        expected_synonyms = [((1, -1, 0), 2), ((1, 0, -1), 4)]
+        self.assertEqual(synonyms, expected_synonyms)
+
+    def test_outer_five(self):
+        """Test vertex_synonyms moduluous wraps around as expected.
+        """
+        hexagon = (1, 1, -2)
+        vertex = 5
+        synonyms = self.geometry.vertex_synonyms(hexagon, vertex)
+        expected_synonyms = [((1, 0, -1), 1), ((2, 0, -2), 3)]
+        self.assertEqual(synonyms, expected_synonyms)
+
+    def test_no_other_neighbors(self):
+        """Test the case where there are no vertex_synonyms.
+        """
+        hexagon = (1, 2, -3)
+        vertex = 1
+        synonyms = self.geometry.vertex_synonyms(hexagon, vertex)
+        expected_synonyms = []
+        self.assertEqual(synonyms, expected_synonyms)

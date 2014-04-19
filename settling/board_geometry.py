@@ -33,6 +33,11 @@ class BoardGeometry(metaclass=ABCMeta):
         """
         pass
 
+    @abstractmethod
+    def vertex_synonyms(self, hexagon_coord, vertex):
+        """Return any other ways of addressing a given vertex.
+        """
+        pass
 
 class StandardBoard(BoardGeometry):
     """The standard 3-4 player catan board.
@@ -51,7 +56,7 @@ class StandardBoard(BoardGeometry):
         """
         self.cached_ordinal_from_hexagon = {}
         self.cached_hexagon_from_ordinal = {}
-        self.max_ordinal = 37
+        self.max_ordinal = 36 # 36 is max ordinal for 37 tiles
 
     def ordinal_from_hexagon(self, hexagon_coord):
         """Give the ordinal location of a tile given its hexagon coordinates.
@@ -75,10 +80,21 @@ class StandardBoard(BoardGeometry):
             self.cached_hexagon_from_ordinal[ordinal_coord] = hexagon_coord
         return hexagon_coord
 
-    def hexagon_neighbors(self, hexagon_coords):
-        all_neighbors = hx.neighbors(hexagon_coords)
+    def hexagon_neighbors(self, hexagon_coord):
+        all_neighbors = hx.neighbors(hexagon_coord)
         existing_neighbors = []
         for neighbor in all_neighbors:
-            if self.ordinal_from_hexagon(neighbor) < self.max_ordinal:
+            if self.ordinal_from_hexagon(neighbor) <= self.max_ordinal:
                 existing_neighbors.append(neighbor)
         return existing_neighbors
+
+    def vertex_synonyms(self, hexagon_coord, vertex):
+        all_neighbors = hx.neighbors(hexagon_coord)
+        first = all_neighbors[vertex - 1]
+        second = all_neighbors[vertex]
+        other_names = []
+        if hx.ordinal_from_hexagon(first) <= self.max_ordinal:
+            other_names.append((first, (vertex + 2) % 6))
+        if hx.ordinal_from_hexagon(second) <= self.max_ordinal:
+            other_names.append((second, (vertex + 4) % 6))
+        return other_names
