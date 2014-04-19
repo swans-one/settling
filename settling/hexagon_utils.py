@@ -68,12 +68,18 @@ show how they are calculated and related.
 """
 
 
-def neighbors(hex_coord):
+def neighbors(hexagon_coord):
+    """Return all the hexagon_coordinates of the surrounding six tiles.
+
+    These tiles should always be given in clockwise order. The
+    starting tile is the northeast tile, or for example, the first
+    neighbor for the tile with ordinal 0, is the tile with ordinal 1.
+    """
     deltas = [(1, 0, -1), (0, 1, -1), (-1, 1, 0),
               (-1, 0, 1), (0, -1, 1), (1, -1, 0)]
     neighbors = []
     for delta in deltas:
-        neighbor = tuple(coord + d for coord, d in zip(hex_coord, delta))
+        neighbor = tuple(coord + d for coord, d in zip(hexagon_coord, delta))
         neighbors.append(neighbor)
     return neighbors
 

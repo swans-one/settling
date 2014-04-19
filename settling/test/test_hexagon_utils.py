@@ -4,8 +4,10 @@ import hexagon_utils as hx
 
 
 class Test_neighbors(unittest.TestCase):
-    def test_origin_neighbors(self):
-        """The neighbors of the origin should be equal to the delta.
+    def test_origin_neighbor_order(self):
+        """The neighbors of the origin should be equal to the deltas.
+
+        They should be in this, correct, order.
         """
         deltas = [(1, 0, -1), (0, 1, -1), (-1, 1, 0),
                   (-1, 0, 1), (0, -1, 1), (1, -1, 0)]
