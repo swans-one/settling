@@ -9,3 +9,6 @@ env
 
 # Ignore todo file
 todo.org
+
+# Don't track static assets
+static/
