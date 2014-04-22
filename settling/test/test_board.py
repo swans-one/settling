@@ -58,3 +58,19 @@ class Test_Board__connect_tiles(unittest.TestCase):
             ('b', 'd') in out_graph.edges() or ('d', 'b') in out_graph.edges())
         self.assertTrue(
             ('c', 'd') in out_graph.edges() or ('d', 'c') in out_graph.edges())
+
+class Test_Board_add_raod(unittest.TestCase):
+    def setUp(self):
+        """Pin the method under test to a mock object.
+        """
+        self.board = MagicMock()
+        self.board._graph = nx.Graph()
+        self.board._graph.add_edge('a', 'b')
+        self.board.add_road = board.Board.add_road
+
+    def test_adds_key_value(self):
+        """Did the key and the value make it in?
+        """
+        self.board.add_road(self.board, 'a', 'b', 'player1')
+        self.assertEqual(self.board._graph['b']['a']['road'], 'player1')
+

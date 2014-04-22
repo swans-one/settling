@@ -67,8 +67,8 @@ class Board:
             graph.add_edges_from(connected)
         return graph
 
-    def add_road(self):
-        pass
+    def add_road(self, tile_1, tile_2, player):
+        self._graph[tile_1][tile_2]['road'] = player
 
     def add_settlement(self):
         pass
