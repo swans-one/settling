@@ -94,7 +94,31 @@ class Board:
         """
         self._vertices[(hexagon_coord, vertex)] = (player, 'town')
 
-    def upgrade_settlement(self):
+    def has_road(self, tile_1, tile_2, player=None):
+        """Return True if there is a road.
+
+        If the optional player argument is passed in, only return True
+        if there is a road owned by that player.
+        """
+        pass
+
+    def has_town(self, hexagon_coord, vertex, player=None):
+        """Return True if there is a town.
+
+        If the optional player argument is passed in, only return True
+        if there is a town owned by that player.
+        """
+        pass
+
+    def has_city(self, hexagon_coord, vertex, player=None):
+        """Return True if there is a city.
+
+        If the optional player argument is passed in, only return True
+        if there is a city owned by that player.
+        """
+        pass
+
+    def upgrade_town(self):
         pass
 
 

@@ -59,6 +59,7 @@ class Test_Board__connect_tiles(unittest.TestCase):
         self.assertTrue(
             ('c', 'd') in out_graph.edges() or ('d', 'c') in out_graph.edges())
 
+
 class Test_Board_add_road(unittest.TestCase):
     def setUp(self):
         """Pin the method under test to a mock object.
@@ -73,6 +74,7 @@ class Test_Board_add_road(unittest.TestCase):
         """
         self.board.add_road(self.board, 'a', 'b', 'player1')
         self.assertEqual(self.board._graph['b']['a']['road'], 'player1')
+
 
 class Test_Board_add_town(unittest.TestCase):
     def setUp(self):
