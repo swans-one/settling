@@ -2,6 +2,7 @@ import random
 
 import networkx as nx
 
+from exceptions import GameRuleViolation
 from board_geometry import StandardBoard
 import game_constants
 
@@ -85,8 +86,13 @@ class Board:
         """
         self._graph[tile_1][tile_2]['road'] = player
 
-    def add_settlement(self):
-        pass
+    def add_town(self, hexagon_coord, vertex, player):
+        """Add a town to a tile's vertex for a give player.
+
+        A vertex can be specified by any of the three possible
+        tile/vertex combinations with the exact same effect.
+        """
+        self._vertices[(hexagon_coord, vertex)] = (player, 'town')
 
     def upgrade_settlement(self):
         pass
