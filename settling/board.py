@@ -43,6 +43,10 @@ class Board:
         self._vertices = {}
 
     def _set_up(self, tile_order, port_order, number_order):
+        """Create a graph based on tiles, ports, and numbers.
+
+        Used to set up an initial self._graph object.
+        """
         board_graph = nx.Graph()
         number_index = 0
         tiles = []
@@ -58,6 +62,12 @@ class Board:
         return board_graph
 
     def _connect_tiles(self, tiles, graph):
+        """Create an connection between each tile  and its neighbors.
+
+        For each of the tiles in the `tiles` argument, this method
+        finds its neighbors based on the board geometry and adds an
+        edge in the graph, connecting the tile and each neighbor.
+        """
         graph.add_nodes_from(tiles)
         for i, tile in enumerate(tiles):
             board_geo = self._board_geometry
@@ -68,6 +78,11 @@ class Board:
         return graph
 
     def add_road(self, tile_1, tile_2, player):
+        """Add a road on the edge between two tiles.
+
+        It does not matter which tile is passed in as `tile_1` and
+        which is passed in as `tile_2`
+        """
         self._graph[tile_1][tile_2]['road'] = player
 
     def add_settlement(self):
