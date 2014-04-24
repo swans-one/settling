@@ -1,7 +1,5 @@
 import random
 
-import networkx as nx
-
 from exceptions import GameRuleViolation
 from board_geometry import StandardBoard
 import game_constants
@@ -38,45 +36,24 @@ class Board:
         self._number_order = number_order
         self._port_map = port_map
         self._board_geometry = board_geometry
-        self._graph = self._set_up(
-            self._tile_order, self._port_map, self._number_order
-        )
         self._vertices = {}
+        self._edges = {}
 
-    def _set_up(self, tile_order, port_order, number_order):
-        """Create a graph based on tiles, ports, and numbers.
+        # Take care of additional setup tasks
+        self._set_up()
 
-        Used to set up an initial self._graph object.
-        """
-        board_graph = nx.Graph()
+    def _set_up(self):
         number_index = 0
         tiles = []
-        for tile in tile_order:
+        for tile in self._tile_order:
             if tile in game_constants.RESOURCE_TILE_TYPES:
                 # Resource tiles have a number
-                tiles.append(Tile(tile, number_order[number_index]))
+                tiles.append(Tile(tile, self._number_order[number_index]))
                 number_index += 1
             else:
                 # Non-resource tiles have no number.
                 tiles.append(Tile(tile, None))
-        board_graph = self._connect_tiles(tiles, board_graph)
-        return board_graph
-
-    def _connect_tiles(self, tiles, graph):
-        """Create an connection between each tile  and its neighbors.
-
-        For each of the tiles in the `tiles` argument, this method
-        finds its neighbors based on the board geometry and adds an
-        edge in the graph, connecting the tile and each neighbor.
-        """
-        graph.add_nodes_from(tiles)
-        for i, tile in enumerate(tiles):
-            board_geo = self._board_geometry
-            hexagon_coord = board_geo.hexagon_from_ordinal(i)
-            tile_neighbors = board_geo.hexagon_neighbors(hexagon_coord)
-            connected = zip([tile] * len(tile_neighbors), tile_neighbors)
-            graph.add_edges_from(connected)
-        return graph
+        self._tiles = tiles
 
     def add_road(self, tile_1, tile_2, player):
         """Add a road on the edge between two tiles.

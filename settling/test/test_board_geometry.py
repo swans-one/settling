@@ -84,9 +84,34 @@ class Test_StandardBoard_hexagon_neighbors(unittest.TestCase):
         self.assertEqual(neighbors, expected_neighbors)
 
 
+class Test_StandardBoard_edge_synonyms(unittest.TestCase):
+    def setUp(self):
+        """Create an instance fo the standard board type.
+        """
+        self.geometry = board_geometry.StandardBoard()
+
+    def test_center_zero(self):
+        """Test edge_synonyms working as expected.
+        """
+        hexagon = (0, 0, 0)
+        edge = 0
+        synonyms = self.geometry.edge_synonyms(hexagon, edge)
+        expected_synonyms = [((1, 0, -1), 3)]
+        self.assertEqual(synonyms, expected_synonyms)
+
+    def test_no_other_synonyms(self):
+        """Test the case where there are no vertex_synonyms.
+        """
+        hexagon = (1, 2, -3)
+        edge = 1
+        synonyms = self.geometry.edge_synonyms(hexagon, edge)
+        expected_synonyms = []
+        self.assertEqual(synonyms, expected_synonyms)
+
+
 class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
     def setUp(self):
-        """Create an instance fo the standard boad type.
+        """Create an instance fo the standard board type.
         """
         self.geometry = board_geometry.StandardBoard()
 
@@ -108,7 +133,7 @@ class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
         expected_synonyms = [((1, 0, -1), 1), ((2, 0, -2), 3)]
         self.assertEqual(synonyms, expected_synonyms)
 
-    def test_no_other_neighbors(self):
+    def test_no_other_synonyms(self):
         """Test the case where there are no vertex_synonyms.
         """
         hexagon = (1, 2, -3)
