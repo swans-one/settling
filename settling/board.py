@@ -55,13 +55,13 @@ class Board:
                 tiles.append(Tile(tile, None))
         self._tiles = tiles
 
-    def add_road(self, tile_1, tile_2, player):
+    def add_road(self, hexagon_coord, edge, player):
         """Add a road on the edge between two tiles.
 
         It does not matter which tile is passed in as `tile_1` and
         which is passed in as `tile_2`
         """
-        self._graph[tile_1][tile_2]['road'] = player
+        self._edges[(hexagon_coord,  edge)] = 'player'
 
     def add_town(self, hexagon_coord, vertex, player):
         """Add a town to a tile's vertex for a give player.

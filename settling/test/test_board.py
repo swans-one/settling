@@ -26,6 +26,19 @@ class Test_Board__set_up(unittest.TestCase):
         self.assertTrue(b._tiles)
 
 
+class Test_Board_add_road(unittest.TestCase):
+    def setUp(self):
+        """Pin the method under test to a mock object.
+        """
+        self.board = MagicMock()
+        self.board._edges = {}
+        self.board.add_road = board.Board.add_road
+
+    def test_road_added(self):
+        self.board.add_road(self.board, (0, 0, 0), 0, 'player1')
+        self.assertEqual(len(self.board._edges), 1)
+
+
 class Test_Board_add_town(unittest.TestCase):
     def setUp(self):
         """Pin the method under test to a mock object.
