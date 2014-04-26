@@ -93,7 +93,17 @@ class Board:
         If the optional player argument is passed in, only return True
         if there is a town owned by that player.
         """
-        pass
+        town_coords = self._board_geometry.vertex_synonyms(
+            hexagon_coord, vertex
+        )
+        town_coords.append((hexagon_coord, vertex))
+        if player:
+            has_vertex = any(self._vertices.get(town_coord) == (player, 'town')
+                             for town_coord in town_coords)
+        else:
+            has_vertex = any('town' in self._vertices.get(town_coord)
+                             for town_coord in town_coords)
+        return has_vertex
 
     def has_city(self, hexagon_coord, vertex, player=None):
         """Return True if there is a city.

@@ -79,3 +79,28 @@ class Test_Board_has_road(unittest.TestCase):
         self.board.add_road(self.board, (1, 0, -1), 3, 'player1')
         has_road = self.board.has_road(self.board, (0, 0, 0), 0, 'player1')
         self.assertTrue(has_road)
+
+
+class Test_Board_has_town(unittest.TestCase):
+    def setUp(self):
+        """Pin the method under test to a mock object.
+        """
+        self.board = MagicMock()
+        self.board._vertices = {}
+        self.board._board_geometry = StandardBoard()
+        self.board.add_town = board.Board.add_town
+        self.board.has_town = board.Board.has_town
+
+    def test_same_vertex(self):
+        """Adding a town should show up at the same location.
+        """
+        self.board.add_town(self.board, (1, 1, -2), 4, 'player1')
+        has_town = self.board.has_town(self.board, (1, 1, -2), 4, 'player1')
+        self.assertTrue(has_town)
+
+    def test_other_vertex(self):
+        """Adding a town should show up in synonymous locations.
+        """
+        self.board.add_town(self.board, (1, 1, -2), 4, 'player1')
+        has_town = self.board.has_town(self.board, (0, 1, -1), 0, 'player1')
+        self.assertTrue(has_town)
