@@ -80,6 +80,25 @@ class Test_Board_has_road(unittest.TestCase):
         has_road = self.board.has_road(self.board, (0, 0, 0), 0, 'player1')
         self.assertTrue(has_road)
 
+    def test_no_player(self):
+        """Test the case where we only care if there is a road there or not.
+        """
+        self.board.add_road(self.board, (1, 0, -1), 3, 'player1')
+        has_road = self.board.has_road(self.board, (0, 0, 0), 0)
+        self.assertTrue(has_road)
+
+    def test_no_road_no_player(self):
+        """Return False when there is no road and no player given.
+        """
+        has_road = self.board.has_road(self.board, (0, 0, 0), 0)
+        self.assertFalse(has_road)
+
+    def test_no_road_with_player(self):
+        """Return False when there is no road but there is a player given.
+        """
+        has_road = self.board.has_road(self.board, (0, 0, 0), 0, 'player1')
+        self.assertFalse(has_road)
+
 
 class Test_Board_has_town(unittest.TestCase):
     def setUp(self):
@@ -104,3 +123,22 @@ class Test_Board_has_town(unittest.TestCase):
         self.board.add_town(self.board, (1, 1, -2), 4, 'player1')
         has_town = self.board.has_town(self.board, (0, 1, -1), 0, 'player1')
         self.assertTrue(has_town)
+
+    def test_no_player(self):
+        """Should return True no matter what the player is.
+        """
+        self.board.add_town(self.board, (1, 1, -2), 4, 'player1')
+        has_town = self.board.has_town(self.board, (0, 1, -1), 0)
+        self.assertTrue(has_town)
+
+    def test_no_town_no_player(self):
+        """Return False, no town, no player.
+        """
+        has_town = self.board.has_town(self.board, (0, 1, -1), 0)
+        self.assertFalse(has_town)
+
+    def test_town_no_player(self):
+        """Return False, no town, with player.
+        """
+        has_town = self.board.has_town(self.board, (0, 1, -1), 0, 'player1')
+        self.assertFalse(has_town)
