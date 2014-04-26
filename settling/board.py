@@ -61,7 +61,7 @@ class Board:
         It does not matter which tile is passed in as `tile_1` and
         which is passed in as `tile_2`
         """
-        self._edges[(hexagon_coord,  edge)] = 'player'
+        self._edges[(hexagon_coord,  edge)] = player
 
     def add_town(self, hexagon_coord, vertex, player):
         """Add a town to a tile's vertex for a give player.
@@ -71,13 +71,21 @@ class Board:
         """
         self._vertices[(hexagon_coord, vertex)] = (player, 'town')
 
-    def has_road(self, tile_1, tile_2, player=None):
+    def has_road(self, hexagon_coord, edge, player=None):
         """Return True if there is a road.
 
         If the optional player argument is passed in, only return True
         if there is a road owned by that player.
         """
-        pass
+        road_coords = self._board_geometry.edge_synonyms(hexagon_coord, edge)
+        road_coords.append((hexagon_coord, edge))
+        if player:
+            has_road = any(self._edges.get(road_coord) == player
+                           for road_coord in road_coords)
+        else:
+            has_road = any(self._edges.get(road_coord) is not None
+                           for road_coord in road_coords)
+        return has_road
 
     def has_town(self, hexagon_coord, vertex, player=None):
         """Return True if there is a town.

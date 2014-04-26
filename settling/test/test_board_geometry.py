@@ -117,6 +117,7 @@ class Test_StandardBoard_edge_synonyms(unittest.TestCase):
         expected_synonyms = [((1, -1, 0), 1)]
         self.assertEqual(synonyms, expected_synonyms)
 
+
 class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
     def setUp(self):
         """Create an instance fo the standard board type.
