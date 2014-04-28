@@ -101,6 +101,39 @@ class Test_Board_has_road(unittest.TestCase):
         self.assertFalse(has_road)
 
 
+class Test_Board_upgrade_town(unittest.TestCase):
+    def setUp(self):
+        """Pin the method under test to a mock object.
+        """
+        self.tiles = game_constants.STANDARD_TILE_ORDER
+        self.numbers = game_constants.STANDARD_NUMBER_ORDER
+        self.ports = game_constants.STANDARD_PORT_MAP
+        self.board_geom = StandardBoard()
+        self.board = board.Board(
+            self.tiles, self.numbers, self.ports, self.board_geom
+        )
+
+    def test_upgrade_works(self):
+        """If conditions are right, upgrade.
+        """
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        self.board.upgrade_town((1, 1, -2), 4, 'player1')
+        self.assertTrue(True)
+
+    def test_raise_when_no_town(self):
+        """Raise an error if there is no town.
+        """
+        with self.assertRaises(GameRuleViolation):
+            self.board.upgrade_town((1, 1, -2), 4, 'player1')
+
+    def test_raise_when_wrong_player(self):
+        """Raise an error if there is another player's town.
+        """
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        with self.assertRaises(GameRuleViolation):
+            self.board.upgrade_town((1, 1, -2), 4, 'player2')
+
+
 class Test_Board_has_town(unittest.TestCase):
     def setUp(self):
         """Pin the method under test to a mock object.
@@ -143,36 +176,3 @@ class Test_Board_has_town(unittest.TestCase):
         """
         has_town = self.board.has_town(self.board, (0, 1, -1), 0, 'player1')
         self.assertFalse(has_town)
-
-
-class Test_Board_upgrade_town(unittest.TestCase):
-    def setUp(self):
-        """Pin the method under test to a mock object.
-        """
-        self.tiles = game_constants.STANDARD_TILE_ORDER
-        self.numbers = game_constants.STANDARD_NUMBER_ORDER
-        self.ports = game_constants.STANDARD_PORT_MAP
-        self.board_geom = StandardBoard()
-        self.board = board.Board(
-            self.tiles, self.numbers, self.ports, self.board_geom
-        )
-
-    def test_upgrade_works(self):
-        """If conditions are right, upgrade.
-        """
-        self.board.add_town((1, 1, -2), 4, 'player1')
-        self.board.upgrade_town((1, 1, -2), 4, 'player1')
-        self.assertTrue(True)
-
-    def test_raise_when_no_town(self):
-        """Raise an error if there is no town.
-        """
-        with self.assertRaises(GameRuleViolation):
-            self.board.upgrade_town((1, 1, -2), 4, 'player1')
-
-    def test_raise_when_wrong_player(self):
-        """Raise an error if there is another player's town.
-        """
-        self.board.add_town((1, 1, -2), 4, 'player1')
-        with self.assertRaises(GameRuleViolation):
-            self.board.upgrade_town((1, 1, -2), 4, 'player2')

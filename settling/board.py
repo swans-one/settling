@@ -87,6 +87,16 @@ class Board:
                            for road_coord in road_coords)
         return has_road
 
+    def upgrade_town(self, hexagon_coord, vertex, player):
+        if not self.has_town(hexagon_coord, vertex):
+            msg = "Must build a town first."
+            raise GameRuleViolation(msg)
+        elif not self.has_town(hexagon_coord, vertex, player):
+            msg = "Cannot upgrade a town you don't own"
+            raise GameRuleViolation(msg)
+        else:
+            self._vertices[(hexagon_coord, vertex)] = (player, 'city')
+
     def has_town(self, hexagon_coord, vertex, player=None):
         """Return True if there is a town.
 
@@ -113,15 +123,6 @@ class Board:
         """
         pass
 
-    def upgrade_town(self, hexagon_coord, vertex, player):
-        if not self.has_town(hexagon_coord, vertex):
-            msg = "Must build a town first."
-            raise GameRuleViolation(msg)
-        elif not self.has_town(hexagon_coord, vertex, player):
-            msg = "Cannot upgrade a town you don't own"
-            raise GameRuleViolation(msg)
-        else:
-            self._vertices[(hexagon_coord, vertex)] = (player, 'city')
 
 class Tile:
     """
