@@ -103,16 +103,9 @@ class Board:
         If the optional player argument is passed in, only return True
         if there is a town owned by that player.
         """
-        bg = self._board_geometry
-        verts = self._vertices
-        town_coords = bg.vertex_synonyms(hexagon_coord, vertex)
-        town_coords.append((hexagon_coord, vertex))
-        if player:
-            has_town = any(verts.get(town_coord) == (player, 'town')
-                           for town_coord in town_coords)
-        else:
-            has_town = any('town' in verts.get(town_coord, (None, None))
-                           for town_coord in town_coords)
+        has_town = self._vertex_contains(
+            hexagon_coord, vertex, player, 'town'
+        )
         return has_town
 
     def has_city(self, hexagon_coord, vertex, player=None):
@@ -122,6 +115,23 @@ class Board:
         if there is a city owned by that player.
         """
         pass
+
+    def _vertex_contains(self, hexagon_coord, vertex, player, town_or_city):
+        """Does the vertex contain a given player's town/city?
+
+        If player is None, return True for any town/city.
+        """
+        bg = self._board_geometry
+        verts = self._vertices
+        town_coords = bg.vertex_synonyms(hexagon_coord, vertex)
+        town_coords.append((hexagon_coord, vertex))
+        if player:
+            has_town = any(verts.get(town_coord) == (player, town_or_city)
+                           for town_coord in town_coords)
+        else:
+            has_town = any(town_or_city in verts.get(town_coord, (None, None))
+                           for town_coord in town_coords)
+        return has_town
 
 
 class Tile:

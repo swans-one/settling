@@ -103,8 +103,6 @@ class Test_Board_has_road(unittest.TestCase):
 
 class Test_Board_upgrade_town(unittest.TestCase):
     def setUp(self):
-        """Pin the method under test to a mock object.
-        """
         self.tiles = game_constants.STANDARD_TILE_ORDER
         self.numbers = game_constants.STANDARD_NUMBER_ORDER
         self.ports = game_constants.STANDARD_PORT_MAP
@@ -136,43 +134,43 @@ class Test_Board_upgrade_town(unittest.TestCase):
 
 class Test_Board_has_town(unittest.TestCase):
     def setUp(self):
-        """Pin the method under test to a mock object.
-        """
-        self.board = MagicMock()
-        self.board._vertices = {}
-        self.board._board_geometry = StandardBoard()
-        self.board.add_town = board.Board.add_town
-        self.board.has_town = board.Board.has_town
+        self.tiles = game_constants.STANDARD_TILE_ORDER
+        self.numbers = game_constants.STANDARD_NUMBER_ORDER
+        self.ports = game_constants.STANDARD_PORT_MAP
+        self.board_geom = StandardBoard()
+        self.board = board.Board(
+            self.tiles, self.numbers, self.ports, self.board_geom
+        )
 
     def test_same_vertex(self):
         """Adding a town should show up at the same location.
         """
-        self.board.add_town(self.board, (1, 1, -2), 4, 'player1')
-        has_town = self.board.has_town(self.board, (1, 1, -2), 4, 'player1')
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        has_town = self.board.has_town((1, 1, -2), 4, 'player1')
         self.assertTrue(has_town)
 
     def test_other_vertex(self):
         """Adding a town should show up in synonymous locations.
         """
-        self.board.add_town(self.board, (1, 1, -2), 4, 'player1')
-        has_town = self.board.has_town(self.board, (0, 1, -1), 0, 'player1')
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        has_town = self.board.has_town((0, 1, -1), 0, 'player1')
         self.assertTrue(has_town)
 
     def test_no_player(self):
         """Should return True no matter what the player is.
         """
-        self.board.add_town(self.board, (1, 1, -2), 4, 'player1')
-        has_town = self.board.has_town(self.board, (0, 1, -1), 0)
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        has_town = self.board.has_town((0, 1, -1), 0)
         self.assertTrue(has_town)
 
     def test_no_town_no_player(self):
         """Return False, no town, no player.
         """
-        has_town = self.board.has_town(self.board, (0, 1, -1), 0)
+        has_town = self.board.has_town((0, 1, -1), 0)
         self.assertFalse(has_town)
 
     def test_town_no_player(self):
         """Return False, no town, with player.
         """
-        has_town = self.board.has_town(self.board, (0, 1, -1), 0, 'player1')
+        has_town = self.board.has_town((0, 1, -1), 0, 'player1')
         self.assertFalse(has_town)
