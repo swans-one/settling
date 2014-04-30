@@ -55,6 +55,10 @@ class Board:
                 tiles.append(Tile(tile, None))
         self._tiles = tiles
 
+    def tile(self, hexagon_coord):
+        ordinal = self._board_geometry.ordinal_from_hexagon(hexagon_coord)
+        return self._tiles[ordinal]
+
     def add_road(self, hexagon_coord, edge, player):
         """Add a road on the edge between two tiles.
 

@@ -26,6 +26,23 @@ class Test_Board__set_up(unittest.TestCase):
         self.assertTrue(b._tiles)
 
 
+class Test_Board_tile(unittest.TestCase):
+    def setUp(self):
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
+
+    def test_tile_water_boundary(self):
+        """Test where there is no water, then water.
+        """
+        not_water = self.board.tile((2, 0, -2))
+        water = self.board.tile((3, 0, -3))
+        self.assertNotEqual(not_water.tile_type, 'water')
+        self.assertEqual(water.tile_type, 'water')
+
+
 class Test_Board_add_road(unittest.TestCase):
     def setUp(self):
         tiles = game_constants.STANDARD_TILE_ORDER
