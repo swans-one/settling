@@ -29,18 +29,24 @@ class Test_Board__set_up(unittest.TestCase):
 
 class Test_Board_add_road(unittest.TestCase):
     def setUp(self):
-        """Pin the method under test to a mock object.
-        """
-        self.board = MagicMock()
-        self.board._edges = {}
-        self.board.add_road = board.Board.add_road
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
 
     def test_road_added(self):
         """Adding a town should increase `_edges` by one.
         """
-        self.board.add_road(self.board, (0, 0, 0), 0, 'player1')
+        self.board.add_road((0, 0, 0), 0, 'player1')
         self.assertEqual(len(self.board._edges), 1)
 
+    def test_existing_road_raises(self):
+        """Existing road -> GameRuleViolation.
+        """
+        self.board.add_road((0, 0, 0), 0, 'player1')
+        with self.assertRaises(GameRuleViolation):
+            self.board.add_road((0, 0, 0), 0, 'player1')
 
 class Test_Board_add_town(unittest.TestCase):
     def setUp(self):
@@ -59,45 +65,43 @@ class Test_Board_add_town(unittest.TestCase):
 
 class Test_Board_has_road(unittest.TestCase):
     def setUp(self):
-        """Pin the method under test to a mock object.
-        """
-        self.board = MagicMock()
-        self.board._edges = {}
-        self.board._board_geometry = StandardBoard()
-        self.board.add_road = board.Board.add_road
-        self.board.has_road = board.Board.has_road
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
 
     def test_same_hexagon_edge(self):
         """Add the road, then it should be there.
         """
-        self.board.add_road(self.board, (1, 0, -1), 3, 'player1')
-        has_road = self.board.has_road(self.board, (1, 0, -1), 3, 'player1')
+        self.board.add_road((1, 0, -1), 3, 'player1')
+        has_road = self.board.has_road((1, 0, -1), 3, 'player1')
         self.assertTrue(has_road)
 
     def test_alternate_hexagon_edge(self):
         """Add the road, then checking a synonym should return true.
         """
-        self.board.add_road(self.board, (1, 0, -1), 3, 'player1')
-        has_road = self.board.has_road(self.board, (0, 0, 0), 0, 'player1')
+        self.board.add_road((1, 0, -1), 3, 'player1')
+        has_road = self.board.has_road((0, 0, 0), 0, 'player1')
         self.assertTrue(has_road)
 
     def test_no_player(self):
         """Test the case where we only care if there is a road there or not.
         """
-        self.board.add_road(self.board, (1, 0, -1), 3, 'player1')
-        has_road = self.board.has_road(self.board, (0, 0, 0), 0)
+        self.board.add_road((1, 0, -1), 3, 'player1')
+        has_road = self.board.has_road((0, 0, 0), 0)
         self.assertTrue(has_road)
 
     def test_no_road_no_player(self):
         """Return False when there is no road and no player given.
         """
-        has_road = self.board.has_road(self.board, (0, 0, 0), 0)
+        has_road = self.board.has_road((0, 0, 0), 0)
         self.assertFalse(has_road)
 
     def test_no_road_with_player(self):
         """Return False when there is no road but there is a player given.
         """
-        has_road = self.board.has_road(self.board, (0, 0, 0), 0, 'player1')
+        has_road = self.board.has_road((0, 0, 0), 0, 'player1')
         self.assertFalse(has_road)
 
 

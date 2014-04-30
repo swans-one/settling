@@ -61,6 +61,9 @@ class Board:
         It does not matter which tile is passed in as `tile_1` and
         which is passed in as `tile_2`
         """
+        if self.has_road(hexagon_coord, edge):
+            msg = "Cannot build a road where a road already exists."
+            raise GameRuleViolation(msg)
         self._edges[(hexagon_coord,  edge)] = player
 
     def add_town(self, hexagon_coord, vertex, player):
