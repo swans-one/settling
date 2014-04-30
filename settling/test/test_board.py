@@ -1,4 +1,3 @@
-from unittest.mock import MagicMock
 import unittest
 
 from board_geometry import StandardBoard
@@ -48,19 +47,25 @@ class Test_Board_add_road(unittest.TestCase):
         with self.assertRaises(GameRuleViolation):
             self.board.add_road((0, 0, 0), 0, 'player1')
 
+
 class Test_Board_add_town(unittest.TestCase):
     def setUp(self):
-        """Pin the method under test to a mock object.
-        """
-        self.board = MagicMock()
-        self.board._vertices = {}
-        self.board.add_town = board.Board.add_town
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
 
     def test_town_added(self):
         """Adding a town should increase `_vertices` by one.
         """
-        self.board.add_town(self.board, (0, 0, 0), 0, 'player1')
+        self.board.add_town((0, 0, 0), 0, 'player1')
         self.assertEqual(len(self.board._vertices), 1)
+
+    def test_existing_town_raises(self):
+        self.board.add_town((0, 0, 0), 0, 'player1')
+        with self.assertRaises(GameRuleViolation):
+            self.board.add_town((0, 0, 0), 0, 'player1')
 
 
 class Test_Board_has_road(unittest.TestCase):
@@ -107,13 +112,11 @@ class Test_Board_has_road(unittest.TestCase):
 
 class Test_Board_upgrade_town(unittest.TestCase):
     def setUp(self):
-        self.tiles = game_constants.STANDARD_TILE_ORDER
-        self.numbers = game_constants.STANDARD_NUMBER_ORDER
-        self.ports = game_constants.STANDARD_PORT_MAP
-        self.board_geom = StandardBoard()
-        self.board = board.Board(
-            self.tiles, self.numbers, self.ports, self.board_geom
-        )
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
 
     def test_upgrade_works(self):
         """If conditions are right, upgrade.
