@@ -114,7 +114,10 @@ class Board:
         If the optional player argument is passed in, only return True
         if there is a city owned by that player.
         """
-        pass
+        has_city = self._vertex_contains(
+            hexagon_coord, vertex, player, 'city'
+        )
+        return has_city
 
     def _vertex_contains(self, hexagon_coord, vertex, player, town_or_city):
         """Does the vertex contain a given player's town/city?

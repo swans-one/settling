@@ -174,3 +174,50 @@ class Test_Board_has_town(unittest.TestCase):
         """
         has_town = self.board.has_town((0, 1, -1), 0, 'player1')
         self.assertFalse(has_town)
+
+
+class Test_Board_has_city(unittest.TestCase):
+    def setUp(self):
+        self.tiles = game_constants.STANDARD_TILE_ORDER
+        self.numbers = game_constants.STANDARD_NUMBER_ORDER
+        self.ports = game_constants.STANDARD_PORT_MAP
+        self.board_geom = StandardBoard()
+        self.board = board.Board(
+            self.tiles, self.numbers, self.ports, self.board_geom
+        )
+
+    def test_same_vertex(self):
+        """Adding a city should show up at the same location.
+        """
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        self.board.upgrade_town((1, 1, -2), 4, 'player1')
+        has_city = self.board.has_city((1, 1, -2), 4, 'player1')
+        self.assertTrue(has_city)
+
+    def test_other_vertex(self):
+        """Adding a city should show up in synonymous locations.
+        """
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        self.board.upgrade_town((1, 1, -2), 4, 'player1')
+        has_city = self.board.has_city((0, 1, -1), 0, 'player1')
+        self.assertTrue(has_city)
+
+    def test_no_player(self):
+        """Should return True no matter what the player is.
+        """
+        self.board.add_town((1, 1, -2), 4, 'player1')
+        self.board.upgrade_town((1, 1, -2), 4, 'player1')
+        has_city = self.board.has_city((0, 1, -1), 0)
+        self.assertTrue(has_city)
+
+    def test_no_city_no_player(self):
+        """Return False, no city, no player.
+        """
+        has_city = self.board.has_city((0, 1, -1), 0)
+        self.assertFalse(has_city)
+
+    def test_city_no_player(self):
+        """Return False, no city, with player.
+        """
+        has_city = self.board.has_city((0, 1, -1), 0, 'player1')
+        self.assertFalse(has_city)
