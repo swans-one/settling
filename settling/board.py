@@ -65,9 +65,20 @@ class Board:
         It does not matter which tile is passed in as `tile_1` and
         which is passed in as `tile_2`
         """
+        # Check a road doesn't already exist.
         if self.has_road(hexagon_coord, edge):
             msg = "Cannot build a road where a road already exists."
             raise GameRuleViolation(msg)
+
+        # Check that road isn't between two water tiles.
+        neighbors = self._board_geometry.hexagon_neighbors(hexagon_coord)
+        current_tile_type = self.tile(hexagon_coord).tile_type
+        opposite_tile_type = self.tile(neighbors[edge]).tile_type
+        if current_tile_type == 'water' and opposite_tile_type == 'water':
+            msg = "Road must be built adjacent to land."
+            raise GameRuleViolation(msg)
+
+        # If no error is thrown, Add the road.
         self._edges[(hexagon_coord,  edge)] = player
 
     def add_town(self, hexagon_coord, vertex, player):

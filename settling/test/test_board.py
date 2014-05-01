@@ -64,6 +64,12 @@ class Test_Board_add_road(unittest.TestCase):
         with self.assertRaises(GameRuleViolation):
             self.board.add_road((0, 0, 0), 0, 'player1')
 
+    def test_between_water_raises(self):
+        """Trying to place a road between two water tiles -> GameRuleViolation
+        """
+        with self.assertRaises(GameRuleViolation):
+            self.board.add_road((3, 0, -3), 2, 'player1')
+
 
 class Test_Board_add_town(unittest.TestCase):
     def setUp(self):
