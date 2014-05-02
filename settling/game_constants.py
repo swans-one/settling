@@ -14,7 +14,7 @@ NON_RESOURCE_TILE_TYPES = ("water", "desert")
 
 TILE_TYPES = RESOURCE_TILE_TYPES + NON_RESOURCE_TILE_TYPES
 
-PORT_TYPES = ("3:1 port", "brick port", "wood port", "sheep port", "ore_port")
+PORT_TYPES = ("3:1 port", "brick port", "wood port", "sheep port", "ore port")
 
 NUMBERS = (2, 3, 4, 5, 6, 8, 9, 10, 11, 12)
 
@@ -30,5 +30,14 @@ STANDARD_NUMBER_ORDER = (
     9, 10, 8, 12, 5, 4, 3, 11, 6, 11, 9, 6, 4, 3, 10, 2, 8, 5
 )
 
-# TODO: turn this into a real object
-STANDARD_PORT_MAP = ()
+STANDARD_PORT_MAP = (
+    ((2, 0, -2), "3:1 port", 0, 1),
+    ((1, 1, -2), "brick port", 1, 2),
+    ((-1, 2, -1), "wood port", 1, 2),
+    ((-2, 2, 0), "3:1 port", 2, 3),
+    ((-2, 1, 1), "wheat port", 3, 4),
+    ((-1, -1, 2), "ore port", 3, 4),
+    ((0, -2, -2), "3:1 port", 4, 5),
+    ((1, -2, 1), "sheep port", 5, 0),
+    ((2, -1, -1), "3:1 port", 5, 0)
+)
