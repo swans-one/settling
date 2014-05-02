@@ -87,10 +87,20 @@ class Board:
         A vertex can be specified by any of the three possible
         tile/vertex combinations with the exact same effect.
         """
+        # Check that a city or town doesn't already exist.
         h, v = hexagon_coord, vertex
         if self.has_town(h, v) or self.has_city(h, v):
             msg = "Cannot build a town where a town or city exists."
             raise GameRuleViolation(msg)
+
+        # Check that there is at least one land tile.
+        synonyms = self._board_geometry.vertex_synonyms(hexagon_coord, vertex)
+        all_water = all(self.tile(h).tile_type == 'water' for h, v in synonyms)
+        if all_water:
+            msg = "Towns must be built near land"
+            raise GameRuleViolation(msg)
+
+        # If no error is thrown, add the city
         self._vertices[(hexagon_coord, vertex)] = (player, 'town')
 
     def has_road(self, hexagon_coord, edge, player=None):

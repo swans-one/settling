@@ -90,6 +90,10 @@ class Test_Board_add_town(unittest.TestCase):
         with self.assertRaises(GameRuleViolation):
             self.board.add_town((0, 0, 0), 0, 'player1')
 
+    def test_only_on_water_raises(self):
+        with self.assertRaises(GameRuleViolation):
+            self.board.add_town((3, 0, -3), 0, 'player1')
+
 
 class Test_Board_has_road(unittest.TestCase):
     def setUp(self):
