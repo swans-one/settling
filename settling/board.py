@@ -203,13 +203,3 @@ class Tile:
         self.tile_type = tile_type
         self.number = number
         self.has_robber = has_robber
-
-
-class Vertex:
-    def __init__(self, settlement=None):
-        self.settlement = settlement
-
-
-class Port:
-    def __init__(self, port_type):
-        self.port_type = port_type
