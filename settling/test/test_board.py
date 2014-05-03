@@ -29,6 +29,7 @@ class Test_Board__set_up(unittest.TestCase):
         b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
         self.assertTrue(b._ports)
 
+
 class Test_Board_tile(unittest.TestCase):
     def setUp(self):
         tiles = game_constants.STANDARD_TILE_ORDER
@@ -44,6 +45,32 @@ class Test_Board_tile(unittest.TestCase):
         water = self.board.tile((3, 0, -3))
         self.assertNotEqual(not_water.tile_type, 'water')
         self.assertEqual(water.tile_type, 'water')
+
+
+class Test_Board_port(unittest.TestCase):
+    def setUp(self):
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
+
+    def test_no_port(self):
+        port_output = self.board.port((0, 0, 0), 0)
+        expected_output = None
+        self.assertEqual(port_output, expected_output)
+
+    def test_port_on_vetex(self):
+        port_output = self.board.port((1, 1, -2), 2)
+        expected_output = 'brick port'
+        self.assertEqual(port_output, expected_output)
+
+    def test_port_on_unnamed_vertex(self):
+        """Return port for a synonym rather than name in port map.
+        """
+        port_output = self.board.port((0, 2, -2), 0)
+        expected_output = 'brick port'
+        self.assertEqual(port_output, expected_output)
 
 
 class Test_Board_add_road(unittest.TestCase):

@@ -39,7 +39,9 @@ class Board:
         self._vertices = {}
         self._edges = {}
 
-        # Take care of additional setup tasks
+        # Take care of additional setup tasks, creating:
+        #   - self._tiles
+        #   - self._ports
         self._set_up()
 
     def _set_up(self):
@@ -64,8 +66,20 @@ class Board:
         self._ports = ports
 
     def tile(self, hexagon_coord):
+        """Return the tile object at the given coordinate.
+        """
         ordinal = self._board_geometry.ordinal_from_hexagon(hexagon_coord)
         return self._tiles[ordinal]
+
+    def port(self, hexagon_coord, vertex):
+        """Return the port at the given vertex, or None.
+        """
+        synonyms = self._board_geometry.vertex_synonyms(hexagon_coord, vertex)
+        synonyms.append((hexagon_coord, vertex))
+        for synonym in synonyms:
+            if self._ports.get(synonym) is not None:
+                return self._ports[synonym]
+        return None
 
     def add_road(self, hexagon_coord, edge, player):
         """Add a road on the edge between two tiles.
