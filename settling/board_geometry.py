@@ -98,7 +98,7 @@ class StandardBoard(BoardGeometry):
     def edge_synonyms(self, hexagon_coord, edge):
         all_neighbors = hx.neighbors(hexagon_coord)
         other = all_neighbors[edge]
-        other_edge = edge + 3 % 6
+        other_edge = (edge + 3) % 6
         if hx.ordinal_from_hexagon(other) <= self.max_ordinal:
             return [(other, other_edge)]
         else:

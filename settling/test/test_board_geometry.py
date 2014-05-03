@@ -108,6 +108,15 @@ class Test_StandardBoard_edge_synonyms(unittest.TestCase):
         expected_synonyms = []
         self.assertEqual(synonyms, expected_synonyms)
 
+    def test_wraps(self):
+        """Test the case where the neighbors wraps around.
+        """
+        hexagon = (1, 0, -1)
+        edge = 4
+        synonyms = self.geometry.edge_synonyms(hexagon, edge)
+        expected_synonyms = [((1, -1, 0), 1)]
+        self.assertEqual(synonyms, expected_synonyms)
+
 
 class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
     def setUp(self):
