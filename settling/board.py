@@ -43,6 +43,7 @@ class Board:
         self._set_up()
 
     def _set_up(self):
+        # Set up tiles
         number_index = 0
         tiles = []
         for tile in self._tile_order:
@@ -54,6 +55,13 @@ class Board:
                 # Non-resource tiles have no number.
                 tiles.append(Tile(tile, None))
         self._tiles = tiles
+
+        # Set up ports
+        ports = {}
+        for hexagon_coord, port_type, vertex_1, vertex_2 in self._port_map:
+            ports[(hexagon_coord, vertex_1)] = port_type
+            ports[(hexagon_coord, vertex_2)] = port_type
+        self._ports = ports
 
     def tile(self, hexagon_coord):
         ordinal = self._board_geometry.ordinal_from_hexagon(hexagon_coord)

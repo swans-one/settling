@@ -25,6 +25,9 @@ class Test_Board__set_up(unittest.TestCase):
         b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
         self.assertTrue(b._tiles)
 
+    def test_creates_ports(self):
+        b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
+        self.assertTrue(b._ports)
 
 class Test_Board_tile(unittest.TestCase):
     def setUp(self):
