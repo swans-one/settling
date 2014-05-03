@@ -5,18 +5,18 @@ from board_geometry import StandardBoard
 import game_constants
 
 
-def random_standard_board():
-    # shuffled copies of the three lists
-    tile_order = random.sample(
-        game_constants.STANDARD_LAND_TILE_ORDER,
-        len(game_constants.STANDARD_LAND_TILE_ORDER)
-    )
-    number_order = random.sample(
-        game_constants.STANDARD_NUMBER_ORDER,
-        len(game_constants.STANDARD_NUMBER_ORDER)
-    )
-    port_order = game_constants.STANDARD_PORT_MAP
-    return Board(tile_order, number_order, port_order, StandardBoard())
+class Tile:
+    """
+    Possible Tile Types:
+       ["water", "wood", "brick", "wheat", "sheep", "ore", "desert"]
+
+    Possible Numbers:
+       1-6, 8-12
+    """
+    def __init__(self, tile_type, number, has_robber=False):
+        self.tile_type = tile_type
+        self.number = number
+        self.has_robber = has_robber
 
 
 class Board:
@@ -191,15 +191,15 @@ class Board:
         return has_town
 
 
-class Tile:
-    """
-    Possible Tile Types:
-       ["water", "wood", "brick", "wheat", "sheep", "ore", "desert"]
-
-    Possible Numbers:
-       1-6, 8-12
-    """
-    def __init__(self, tile_type, number, has_robber=False):
-        self.tile_type = tile_type
-        self.number = number
-        self.has_robber = has_robber
+def random_standard_board():
+    # shuffled copies of the three lists
+    tile_order = random.sample(
+        game_constants.STANDARD_LAND_TILE_ORDER,
+        len(game_constants.STANDARD_LAND_TILE_ORDER)
+    )
+    number_order = random.sample(
+        game_constants.STANDARD_NUMBER_ORDER,
+        len(game_constants.STANDARD_NUMBER_ORDER)
+    )
+    port_order = game_constants.STANDARD_PORT_MAP
+    return Board(tile_order, number_order, port_order, StandardBoard())
