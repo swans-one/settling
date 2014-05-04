@@ -29,6 +29,11 @@ class Test_Board__set_up(unittest.TestCase):
         b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
         self.assertTrue(b._ports)
 
+    def test_adds_one_robber(self):
+        b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
+        robber_count = sum([1 for t in b._tiles if t.has_robber])
+        self.assertEqual(robber_count, 1)
+
 
 class Test_Board_tile(unittest.TestCase):
     def setUp(self):

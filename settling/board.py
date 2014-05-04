@@ -65,6 +65,11 @@ class Board:
             ports[(hexagon_coord, vertex_2)] = port_type
         self._ports = ports
 
+        # Place the robber initially
+        desert_filter = lambda x: x.tile_type == 'desert'
+        dessert_tile = filter(desert_filter, self._tiles).__next__()
+        dessert_tile.has_robber = True
+
     def tile(self, hexagon_coord):
         """Return the tile object at the given coordinate.
         """
