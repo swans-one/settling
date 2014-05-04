@@ -125,6 +125,21 @@ class Board:
         # If no error is thrown, add the city
         self._vertices[(hexagon_coord, vertex)] = (player, 'town')
 
+    def upgrade_town(self, hexagon_coord, vertex, player):
+        """Turn a town into a city.
+
+        Will fail if the town does not exist, or is not owned by the
+        player.
+        """
+        if not self.has_town(hexagon_coord, vertex):
+            msg = "Must build a town first."
+            raise GameRuleViolation(msg)
+        elif not self.has_town(hexagon_coord, vertex, player):
+            msg = "Cannot upgrade a town you don't own"
+            raise GameRuleViolation(msg)
+        else:
+            self._vertices[(hexagon_coord, vertex)] = (player, 'city')
+
     def has_road(self, hexagon_coord, edge, player=None):
         """Return True if there is a road.
 
@@ -140,16 +155,6 @@ class Board:
             has_road = any(self._edges.get(road_coord) is not None
                            for road_coord in road_coords)
         return has_road
-
-    def upgrade_town(self, hexagon_coord, vertex, player):
-        if not self.has_town(hexagon_coord, vertex):
-            msg = "Must build a town first."
-            raise GameRuleViolation(msg)
-        elif not self.has_town(hexagon_coord, vertex, player):
-            msg = "Cannot upgrade a town you don't own"
-            raise GameRuleViolation(msg)
-        else:
-            self._vertices[(hexagon_coord, vertex)] = (player, 'city')
 
     def has_town(self, hexagon_coord, vertex, player=None):
         """Return True if there is a town.
