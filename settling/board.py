@@ -5,18 +5,18 @@ from board_geometry import StandardBoard
 import game_constants
 
 
-def random_standard_board():
-    # shuffled copies of the three lists
-    tile_order = random.sample(
-        game_constants.STANDARD_LAND_TILE_ORDER,
-        len(game_constants.STANDARD_LAND_TILE_ORDER)
-    )
-    number_order = random.sample(
-        game_constants.STANDARD_NUMBER_ORDER,
-        len(game_constants.STANDARD_NUMBER_ORDER)
-    )
-    port_order = game_constants.STANDARD_PORT_MAP
-    return Board(tile_order, number_order, port_order, StandardBoard())
+class Tile:
+    """
+    Possible Tile Types:
+       ["water", "wood", "brick", "wheat", "sheep", "ore", "desert"]
+
+    Possible Numbers:
+       1-6, 8-12
+    """
+    def __init__(self, tile_type, number, has_robber=False):
+        self.tile_type = tile_type
+        self.number = number
+        self.has_robber = has_robber
 
 
 class Board:
@@ -125,6 +125,21 @@ class Board:
         # If no error is thrown, add the city
         self._vertices[(hexagon_coord, vertex)] = (player, 'town')
 
+    def upgrade_town(self, hexagon_coord, vertex, player):
+        """Turn a town into a city.
+
+        Will fail if the town does not exist, or is not owned by the
+        player.
+        """
+        if not self.has_town(hexagon_coord, vertex):
+            msg = "Must build a town first."
+            raise GameRuleViolation(msg)
+        elif not self.has_town(hexagon_coord, vertex, player):
+            msg = "Cannot upgrade a town you don't own"
+            raise GameRuleViolation(msg)
+        else:
+            self._vertices[(hexagon_coord, vertex)] = (player, 'city')
+
     def has_road(self, hexagon_coord, edge, player=None):
         """Return True if there is a road.
 
@@ -140,16 +155,6 @@ class Board:
             has_road = any(self._edges.get(road_coord) is not None
                            for road_coord in road_coords)
         return has_road
-
-    def upgrade_town(self, hexagon_coord, vertex, player):
-        if not self.has_town(hexagon_coord, vertex):
-            msg = "Must build a town first."
-            raise GameRuleViolation(msg)
-        elif not self.has_town(hexagon_coord, vertex, player):
-            msg = "Cannot upgrade a town you don't own"
-            raise GameRuleViolation(msg)
-        else:
-            self._vertices[(hexagon_coord, vertex)] = (player, 'city')
 
     def has_town(self, hexagon_coord, vertex, player=None):
         """Return True if there is a town.
@@ -191,25 +196,15 @@ class Board:
         return has_town
 
 
-class Tile:
-    """
-    Possible Tile Types:
-       ["water", "wood", "brick", "wheat", "sheep", "ore", "desert"]
-
-    Possible Numbers:
-       1-6, 8-12
-    """
-    def __init__(self, tile_type, number, has_robber=False):
-        self.tile_type = tile_type
-        self.number = number
-        self.has_robber = has_robber
-
-
-class Vertex:
-    def __init__(self, settlement=None):
-        self.settlement = settlement
-
-
-class Port:
-    def __init__(self, port_type):
-        self.port_type = port_type
+def random_standard_board():
+    # shuffled copies of the three lists
+    tile_order = random.sample(
+        game_constants.STANDARD_LAND_TILE_ORDER,
+        len(game_constants.STANDARD_LAND_TILE_ORDER)
+    )
+    number_order = random.sample(
+        game_constants.STANDARD_NUMBER_ORDER,
+        len(game_constants.STANDARD_NUMBER_ORDER)
+    )
+    port_order = game_constants.STANDARD_PORT_MAP
+    return Board(tile_order, number_order, port_order, StandardBoard())
