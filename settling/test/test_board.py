@@ -1,9 +1,9 @@
 import unittest
 
-from board_geometry import StandardBoard
-from exceptions import GameRuleViolation
-import board
-import game_constants
+from settling.board_geometry import StandardBoard
+from settling.exceptions import GameRuleViolation
+from settling import board
+from settling import game_constants
 
 
 class Test_random_standard_board(unittest.TestCase):
@@ -76,6 +76,25 @@ class Test_Board_port(unittest.TestCase):
         port_output = self.board.port((0, 2, -2), 0)
         expected_output = 'brick port'
         self.assertEqual(port_output, expected_output)
+
+
+class Test_Board_move_robber(unittest.TestCase):
+    def setUp(self):
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
+
+    def test_robber_in_new_location(self):
+        new_location = (0, 0, 0)
+        self.board.move_robber(to_coord=new_location)
+        self.assertTrue(self.board.tile(new_location).has_robber)
+
+    def test_only_one_robber_after_move(self):
+        self.board.move_robber(to_coord=(0, 0, 0))
+        robber_count = sum([1 for t in self.board._tiles if t.has_robber])
+        self.assertEqual(robber_count, 1)
 
 
 class Test_Board_add_road(unittest.TestCase):

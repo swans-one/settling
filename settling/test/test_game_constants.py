@@ -1,6 +1,6 @@
 import unittest
 
-import game_constants
+from settling import game_constants
 
 
 class Test_Standards(unittest.TestCase):
