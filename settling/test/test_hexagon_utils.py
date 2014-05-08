@@ -1,6 +1,6 @@
 import unittest
 
-import hexagon_utils as hx
+from settling import hexagon_utils as hx
 
 
 class Test_neighbors(unittest.TestCase):

@@ -1,6 +1,6 @@
 import unittest
 
-import board_geometry
+from settling import board_geometry
 
 
 class Test_StandardBoard_ordinal_from_hexagon(unittest.TestCase):

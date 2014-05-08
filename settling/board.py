@@ -1,8 +1,8 @@
 import random
 
-from exceptions import GameRuleViolation
-from board_geometry import StandardBoard
-import game_constants
+from settling.exceptions import GameRuleViolation
+from settling.board_geometry import StandardBoard
+from settling import game_constants
 
 
 class Tile:
@@ -17,6 +17,10 @@ class Tile:
         self.tile_type = tile_type
         self.number = number
         self.has_robber = has_robber
+
+    def __repr__(self):
+        rep = "Tile(tile_type={t!r}, number={n!r}, has_robber={r!r})"
+        return rep.format(t=self.tile_type, n=self.number, r=self.has_robber)
 
 
 class Board:
@@ -65,6 +69,11 @@ class Board:
             ports[(hexagon_coord, vertex_2)] = port_type
         self._ports = ports
 
+        # Place the robber initially
+        desert_filter = lambda tile: tile.tile_type == 'desert'
+        dessert_tile = filter(desert_filter, self._tiles).__next__()
+        dessert_tile.has_robber = True
+
     def tile(self, hexagon_coord):
         """Return the tile object at the given coordinate.
         """
@@ -80,6 +89,25 @@ class Board:
             if self._ports.get(synonym) is not None:
                 return self._ports[synonym]
         return None
+
+    def move_robber(self, to_coord):
+        """Remove robber from its position and place on to_coord.
+        """
+        # Check that we're moving the robber to a new tile
+        if self.tile(to_coord).has_robber:
+            msg = "Cannot leave robber on current tile"
+            raise GameRuleViolation(msg)
+
+        # Check that we're moving the robber to a land tile
+        if self.tile(to_coord).tile_type == 'water':
+            msg = "Must move robber to land tile."
+            raise GameRuleViolation(msg)
+
+        # Actually move the robber
+        robber_filter = lambda tile: tile.has_robber
+        current_robber_tile = filter(robber_filter, self._tiles).__next__()
+        current_robber_tile.has_robber = False
+        self.tile(to_coord).has_robber = True
 
     def add_road(self, hexagon_coord, edge, player):
         """Add a road on the edge between two tiles.
