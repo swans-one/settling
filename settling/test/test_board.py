@@ -1,9 +1,28 @@
 import unittest
+from copy import deepcopy
+
+from mock import patch
 
 from settling.board_geometry import StandardBoard
 from settling.exceptions import GameRuleViolation
 from settling import board
 from settling import game_constants
+
+
+class Test_Tile_eq(unittest.TestCase):
+    def test_tiles_equal(self):
+        t1 = board.Tile('water', 3, False)
+        t2 = board.Tile('water', 3, False)
+        self.assertTrue(t1 == t2)
+
+    def test_tiles_not_equal(self):
+        t1 = board.Tile('water', 3, False)
+        t2 = board.Tile('water', 4, False)
+        self.assertTrue(t1 != t2)
+
+    def test_not_equal_to_something_else(self):
+        t = board.Tile('water', 3, False)
+        self.assertTrue(t != 4)
 
 
 class Test_random_standard_board(unittest.TestCase):
@@ -33,6 +52,48 @@ class Test_Board__set_up(unittest.TestCase):
         b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
         robber_count = sum([1 for t in b._tiles if t.has_robber])
         self.assertEqual(robber_count, 1)
+
+
+class Test_Board_deepcopy(unittest.TestCase):
+    def setUp(self):
+        self.tiles = game_constants.STANDARD_TILE_ORDER
+        self.numbers = game_constants.STANDARD_NUMBER_ORDER
+        self.ports = game_constants.STANDARD_PORT_MAP
+        self.board_geom = StandardBoard()
+
+    def test_copy_calls_dunder(self):
+        b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
+        with patch('settling.board.Board.__deepcopy__') as copy_mock:
+            deepcopy(b)
+        self.assertTrue(copy_mock.called)
+
+    def test_initial_object_sameness(self):
+        b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
+        b2 = deepcopy(b)
+        self.assertEqual(b._tiles, b2._tiles)
+        self.assertEqual(b._ports, b2._ports)
+
+    def test_road_sameness(self):
+        b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
+        b.add_road((0, 0, 0), 0, 'player2')
+        b2 = deepcopy(b)
+        self.assertEqual(b._edges, b2._edges)
+
+    def test_town_sameness(self):
+        b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
+        b.add_town((0, 0, 0), 0, 'player2')
+        b2 = deepcopy(b)
+        self.assertEqual(b._vertices, b2._vertices)
+
+    def test_mutating_copy_does_not_mutate_original(self):
+        b = board.Board(self.tiles, self.numbers, self.ports, self.board_geom)
+        b2 = deepcopy(b)
+        b2.add_road((0, 0, 0), 0, 'player2')
+        b2.add_town((0, 0, 0), 0, 'player2')
+        self.assertEqual(len(b2._edges), 1)
+        self.assertEqual(len(b2._vertices), 1)
+        self.assertEqual(len(b._edges), 0)
+        self.assertEqual(len(b._vertices), 0)
 
 
 class Test_Board_tile(unittest.TestCase):

@@ -1,4 +1,5 @@
 import random
+from copy import deepcopy
 
 from settling.exceptions import GameRuleViolation
 from settling.board_geometry import StandardBoard
@@ -21,6 +22,12 @@ class Tile:
     def __repr__(self):
         rep = "Tile(tile_type={t!r}, number={n!r}, has_robber={r!r})"
         return rep.format(t=self.tile_type, n=self.number, r=self.has_robber)
+
+    def __eq__(self, other):
+        if isinstance(other, self.__class__):
+            return self.__dict__ == other.__dict__
+        else:
+            return False
 
 
 class Board:
@@ -73,6 +80,21 @@ class Board:
         desert_filter = lambda tile: tile.tile_type == 'desert'
         dessert_tile = filter(desert_filter, self._tiles).__next__()
         dessert_tile.has_robber = True
+
+    def __deepcopy__(self, memo):
+        # Create a brand new blank board, with the same configuration.
+        new_board = type(self)(
+            tile_order=deepcopy(self._tile_order, memo),
+            number_order=deepcopy(self._number_order, memo),
+            port_map=deepcopy(self._port_map, memo),
+            board_geometry=self._board_geometry
+        )
+
+        # But then set its vertices and edges to contain the same bits
+        # as the current board (but stored in separate objects).
+        new_board._vertices = deepcopy(self._vertices, memo)
+        new_board._edges = deepcopy(self._edges, memo)
+        return new_board
 
     def tile(self, hexagon_coord):
         """Return the tile object at the given coordinate.
