@@ -1,5 +1,7 @@
 from copy import deepcopy
 
+import settling.player_actions as player_action
+
 
 def game_loop(board, player1, player2, player3, player4=None):
     players = [player1, player2, player3] + ([player4] if player4 else [])
@@ -16,7 +18,7 @@ def game_loop(board, player1, player2, player3, player4=None):
     while winner is None:
         for player in players:
             player_board = deepcopy(board)
-            action = StartAction()
+            action = player_action.StartTurn()
             hand = None
             while action is not None:
                 action = player.act(player_board, hand)
@@ -26,10 +28,6 @@ def game_loop(board, player1, player2, player3, player4=None):
             if winner:
                 break
     return winner
-
-
-class StartAction:
-    pass
 
 
 def who_won(board):
