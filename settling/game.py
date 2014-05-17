@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+from settling.hand import Hand
 import settling.player_actions as player_action
 
 
@@ -18,7 +19,8 @@ def game_loop(board, roll, player1, player2, player3, player4=None):
         player_board = deepcopy(board)
         hexagon_coord, vertex = player.starting_town(player_board)
         board.add_town(hexagon_coord, vertex, player.name)
-        hand.add_resources(initial_resources(hexagon_coord, vertex))
+        resources = initial_resources(hexagon_coord, vertex)
+        hands[player.name].add_resources(resources)
 
     # Do normal turns:
     winner = None
@@ -27,10 +29,10 @@ def game_loop(board, roll, player1, player2, player3, player4=None):
             # Roll, draw cards, move robber.
             number = roll()
             player_board = deepcopy(board)
-            player_hand = deepcopy(hand[player.name])
+            player_hand = deepcopy(hands[player.name])
             if number == 7:
                 action = player.play_action_card(player_board, player_hand)
-                if isinstance(action, PlayActionCard):
+                if isinstance(action, player_action.PlayActionCard):
                     apply_action(action, board, players, hands)
                 move_robber(player, board)
             else:
@@ -40,14 +42,14 @@ def game_loop(board, roll, player1, player2, player3, player4=None):
 
             # Start regular turn
             player_board = deepcopy(board)
-            player_hand = deepcopy(hand[player.name])
+            player_hand = deepcopy(hands[player.name])
             action = player_action.StartTurn()
             while not isinstance(action, player_action.EndTurn):
-                action = player.act(player_board, hand)
+                action = player.act(player_board, player_hand)
                 if action:
                     apply_action(action, board, players, hands)
             winner = who_won(board)
-            if winner
+            if winner:
                 break
     return winner
 
