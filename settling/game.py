@@ -3,29 +3,51 @@ from copy import deepcopy
 import settling.player_actions as player_action
 
 
-def game_loop(board, player1, player2, player3, player4=None):
+def game_loop(board, roll, player1, player2, player3, player4=None):
+    # Create players list and hand mapping
     players = [player1, player2, player3] + ([player4] if player4 else [])
+    hands = {player.name: Hand() for player in players}
 
     # start by placing tiles.
-    # plaers in order, then reverse order.
-    for player in players + list(reversed(players)):
+    # players in order, then reverse order.
+    for player in players:
         player_board = deepcopy(board)
-        hex_coord, vertex = player.starting_town(player_board)
-        board.add_town(hex_coord, vertex, player.name)
+        hexagon_coord, vertex = player.starting_town(player_board)
+        board.add_town(hexagon_coord, vertex, player.name)
+    for player in reversed(players):
+        player_board = deepcopy(board)
+        hexagon_coord, vertex = player.starting_town(player_board)
+        board.add_town(hexagon_coord, vertex, player.name)
+        hand.add_resources(initial_resources(hexagon_coord, vertex))
 
     # Do normal turns:
     winner = None
     while winner is None:
         for player in players:
+            # Roll, draw cards, move robber.
+            number = roll()
             player_board = deepcopy(board)
+            player_hand = deepcopy(hand[player.name])
+            if number == 7:
+                action = player.play_action_card(player_board, player_hand)
+                if isinstance(action, PlayActionCard):
+                    apply_action(action, board, players, hands)
+                move_robber(player, board)
+            else:
+                for player in players:
+                    resources = draw_player_resources(board, player, number)
+                    hands[player.name].add_resources(resources)
+
+            # Start regular turn
+            player_board = deepcopy(board)
+            player_hand = deepcopy(hand[player.name])
             action = player_action.StartTurn()
-            hand = None
-            while action is not None:
+            while not isinstance(action, player_action.EndTurn):
                 action = player.act(player_board, hand)
                 if action:
-                    apply_action(action, board)
+                    apply_action(action, board, players, hands)
             winner = who_won(board)
-            if winner:
+            if winner
                 break
     return winner
 
@@ -35,4 +57,16 @@ def who_won(board):
 
 
 def apply_action(action, board):
+    pass
+
+
+def draw_player_resources(board, player, number):
+    pass
+
+
+def initial_resources(hex_coord, vertex):
+    pass
+
+
+def move_robber(player, board):
     pass
