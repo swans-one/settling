@@ -1,3 +1,21 @@
+"""The main game logic code.
+
+The code in this module keeps track of:
+
+  1) The global board state.
+  2) The global state of players' hands.
+  3) The progression of turns
+  4) When a victory condition has been reached.
+
+The code in this module is responsible for dispatching all actions to
+the appropriate players. It is also responsible for modifying global
+game state based on these actions.
+
+As a design principle, a piece of mutable global state should never be
+passed to players. Instead, copies of that state, that players can
+modify locally should be passed in instead.
+"""
+
 from copy import deepcopy
 
 from settling.hand import Hand
