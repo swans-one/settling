@@ -22,61 +22,79 @@ from settling.hand import Hand
 import settling.player_actions as player_action
 
 
-def game_loop(board, roll, player1, player2, player3, player4=None):
-    # Create players list and hand mapping
-    players = [player1, player2, player3] + ([player4] if player4 else [])
-    hands = {player.name: Hand() for player in players}
+class Game:
+    def __init__(self, board, players, roll):
+        self.board = board
+        self.players = players
+        self.roll = roll
+        self.hands = {player.name: Hand() for player in players}
 
-    # start by placing tiles.
-    # players in order, then reverse order.
-    for player in players:
-        player_board = deepcopy(board)
-        hexagon_coord, vertex = player.starting_town(player_board)
-        board.add_town(hexagon_coord, vertex, player.name)
-    for player in reversed(players):
-        player_board = deepcopy(board)
-        hexagon_coord, vertex = player.starting_town(player_board)
-        board.add_town(hexagon_coord, vertex, player.name)
-        resources = initial_resources(hexagon_coord, vertex)
-        hands[player.name].add_resources(resources)
+    def game_loop(self):
+        """Perform the main game loop.
+        """
+        self._board_set_up()
+        winner = None
+        while winner is None:
+            for player in self.players:
+                self._player_turn(player)
+                winner = who_won(self.board)
+                if winner:
+                    break
+        return winner
 
-    # Do normal turns:
-    winner = None
-    while winner is None:
-        for player in players:
-            # Roll, draw cards, move robber.
-            number = roll()
-            player_board = deepcopy(board)
-            player_hand = deepcopy(hands[player.name])
-            if number == 7:
-                action = player.play_action_card(player_board, player_hand)
-                if isinstance(action, player_action.PlayActionCard):
-                    apply_action(action, board, players, hands)
-                move_robber(player, board)
-            else:
-                for player in players:
-                    resources = draw_player_resources(board, player, number)
-                    hands[player.name].add_resources(resources)
+    def _board_set_up(self):
+        """Initial settlement placement. Initial resource distribtuion.
+        """
+        for player in self.players:
+            player_board = deepcopy(self.board)
+            hexagon_coord, vertex = player.starting_town(player_board)
+            self.board.add_town(hexagon_coord, vertex, player.name)
+        for player in reversed(self.players):
+            player_board = deepcopy(self.board)
+            hexagon_coord, vertex = player.starting_town(player_board)
+            self.board.add_town(hexagon_coord, vertex, player.name)
+            resources = initial_resources(hexagon_coord, vertex)
+            self.hands[player.name].add_resources(resources)
 
-            # Start regular turn
-            player_board = deepcopy(board)
-            player_hand = deepcopy(hands[player.name])
-            action = player_action.StartTurn()
-            while not isinstance(action, player_action.EndTurn):
-                action = player.act(player_board, player_hand)
-                if action:
-                    apply_action(action, board, players, hands)
-            winner = who_won(board)
-            if winner:
-                break
-    return winner
+    def _player_turn(self, player):
+        # Turn set up:
+        #   - Initial action card?
+        #   - roll
+        #   - Move robber or distribute resources
+        player_board = deepcopy(self.board)
+        player_hand = deepcopy(self.hands[player.name])
+        action = player.play_action_card(player_board, player_hand)
+        if isinstance(action, player_action.PlayActionCard):
+            self._apply_action(action)
+        number = self.roll()
+        player_board = deepcopy(self.board)
+        player_hand = deepcopy(self.hands[player.name])
+        if number == 7:
+            self._move_robber()
+        else:
+            self._distribute_resources(number)
+
+        # Regular turn:
+        player_board = deepcopy(self.board)
+        player_hand = deepcopy(self.hands[player.name])
+        action = player_action.StartTurn()
+        while not isinstance(action, player_action.EndTurn):
+            self._apply_action(action)
+            action = player.act(player_board, player_hand)
+
+    def _move_robber(self):
+        pass
+
+    def _distribute_resources(self, number):
+        for player in self.players:
+            resources = draw_player_resources(self.board, player, number)
+            self.hands[player.name].add_resources(resources)
+
+    def _apply_action(action):
+        pass
 
 
 def who_won(board):
-    pass
-
-
-def apply_action(action, board):
     pass
 
 
@@ -85,8 +103,4 @@ def draw_player_resources(board, player, number):
 
 
 def initial_resources(hex_coord, vertex):
-    pass
-
-
-def move_robber(player, board):
     pass
