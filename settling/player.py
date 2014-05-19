@@ -1,7 +1,7 @@
-from abc import ABCmeta, abstractmethod
+from abc import ABCMeta, abstractmethod
 
 
-class Player(metaclass=ABCmeta):
+class Player(metaclass=ABCMeta):
     @property
     @abstractmethod
     def name(self):
