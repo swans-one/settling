@@ -11,7 +11,7 @@ class CliPlayer(Player):
     def starting_town(self, board):
         validated = False
         hexagon_prompt = "Place Town on tile: "
-        vertex_prompt = "Place Town which vertext of {tile}"
+        vertex_prompt = "Place Town which vertex of {tile}: "
         while invalidated:
             hexagon_string = input(hexagon_prompt)
             vertex_string = input(vertex_prompt.format(tile=hexagon_string))
@@ -44,7 +44,27 @@ def hexagon_coord_from_string(hexagon_string):
        A tuple of ints.
 
     Raises:
-       ValueError if the string is bad
+       ValueError if the string is poorly formed.
     """
     coords = (int(c.strip()) for c in hexagon_string.strip(' ()').split(','))
     return tuple(coords)
+
+
+def vertex_from_string(vertex_string):
+    """Parse a user supplied vertex.
+
+    Args:
+      A user input string representing a vertex. Should be an
+      integer between 0 and 5.
+
+    Returns:
+      An int, the vertex.
+
+    Raises:
+      ValueError if the string is poorly formed, or
+
+    """
+    vertex = int(vertex_string.strip())
+    if not 0 <= vertex <= 5:
+        raise ValueError('Vertices are whole numbers between 0 and 5.')
+    return vertex
