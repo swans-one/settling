@@ -19,6 +19,10 @@ class Test_hexagon_coords_from_string(unittest.TestCase):
         with self.assertRaises(ValueError):
             cli_player.hexagon_coord_from_string(poorly_formed)
 
+    def test_illegal_coord(self):
+        not_valid_coord = '(1, 2, 3)'
+        with self.assertRaises(ValueError):
+            cli_player.hexagon_coord_from_string(not_valid_coord)
 
 class Test_vertex_from_string(unittest.TestCase):
     def test_just_integer_input(self):

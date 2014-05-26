@@ -46,8 +46,12 @@ def hexagon_coord_from_string(hexagon_string):
     Raises:
        ValueError if the string is poorly formed.
     """
-    coords = (int(c.strip()) for c in hexagon_string.strip(' ()').split(','))
-    return tuple(coords)
+    coord = (int(c.strip()) for c in hexagon_string.strip(' ()').split(','))
+    coord = tuple(coord)
+    if not sum(coord) == 0:
+        err = 'Not a valid hexgon coord: sum({coord}) != 0'
+        raise ValueError(err.format(coord=coord))
+    return coord
 
 
 def vertex_from_string(vertex_string):
