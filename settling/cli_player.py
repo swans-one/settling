@@ -12,14 +12,16 @@ class CliPlayer(Player):
         validated = False
         hexagon_prompt = "Place Town on tile: "
         vertex_prompt = "Place Town which vertex of {tile}: "
-        while invalidated:
+        while not validated:
             hexagon_string = input(hexagon_prompt)
             vertex_string = input(vertex_prompt.format(tile=hexagon_string))
             try:
-                hexagon_coord = hexagon_coord_fro
+                hexagon_coord = hexagon_coord_from_string(hexagon_string)
+                vertex = vertex_from_string(vertex_string)
             except ValueError:
                 continue
-        return
+            validated = True
+        return hexagon_coord, vertex
 
     def play_action_card(self, board, hand):
         pass
