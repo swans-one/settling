@@ -66,5 +66,6 @@ def vertex_from_string(vertex_string):
     """
     vertex = int(vertex_string.strip())
     if not 0 <= vertex <= 5:
-        raise ValueError('Vertices are whole numbers between 0 and 5.')
+        err = 'Given vertex: {vertex} must be a whole numbers between 0 and 5.'
+        raise ValueError(err.format(vertex=vertex))
     return vertex
