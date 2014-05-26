@@ -1,4 +1,27 @@
+from functools import wraps
+
 from settling.player import Player
+
+
+def retry_input(*errors):
+    """A decorator that will retry the function until success.
+
+    Args:
+      *errors - a variable number of errors to retry on.
+    """
+    def decorator(f):
+        @wraps(f)
+        def wrapper(*args, **kwargs):
+            while True:
+                try:
+                    res = f(*args, **kwargs)
+                    break
+                except errors as err:
+                    print(err)
+                    pass
+            return res
+        return wrapper
+    return decorator
 
 
 class CliPlayer(Player):
