@@ -1,6 +1,35 @@
 import unittest
 
+from mock import patch
+
 import settling.cli_player as cli_player
+
+
+class Test_retry_input(unittest.TestCase):
+    @patch('builtins.input', lambda x: 'four')
+    def test_no_error_argument(self):
+        # Since no error list, should not retry, just raise.
+        @cli_player.retry_input()
+        def get_three():
+            three = input("Type 'three': ")
+            if three not in ('3', 'three'):
+                raise ValueError
+            return 3
+        with self.assertRaises(ValueError):
+            get_three()
+
+    @patch('builtins.input')
+    def test_two_calls(self, input_mock):
+        input_mock.side_effect = ['4', '3']
+
+        @cli_player.retry_input(ValueError)
+        def get_three():
+            three = input("Type 'three': ")
+            if three not in ('3', 'three'):
+                raise ValueError
+            return 3
+        get_three()
+        self.assertEqual(len(input_mock.mock_calls), 2)
 
 
 class Test_hexagon_coords_from_string(unittest.TestCase):
@@ -23,6 +52,7 @@ class Test_hexagon_coords_from_string(unittest.TestCase):
         not_valid_coord = '(1, 2, 3)'
         with self.assertRaises(ValueError):
             cli_player.hexagon_coord_from_string(not_valid_coord)
+
 
 class Test_vertex_from_string(unittest.TestCase):
     def test_just_integer_input(self):
