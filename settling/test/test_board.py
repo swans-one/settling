@@ -370,3 +370,9 @@ class Test_Board_has_city(unittest.TestCase):
         """
         has_city = self.board.has_city((0, 1, -1), 0, 'player1')
         self.assertFalse(has_city)
+
+
+class Test_standard_board(unittest.TestCase):
+    def test_returns_board(self):
+        b = board.standard_board()
+        self.assertIsInstance(b, board.Board)

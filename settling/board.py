@@ -246,7 +246,18 @@ class Board:
         return has_town
 
 
+def standard_board():
+    """The rule-book introductory board arrangement.
+    """
+    tile_order = game_constants.STANDARD_LAND_TILE_ORDER
+    number_order = game_constants.STANDARD_NUMBER_ORDER
+    port_order = game_constants.STANDARD_PORT_MAP
+    return Board(tile_order, number_order, port_order, StandardBoard())
+
+
 def random_standard_board():
+    """A random permutation of the tiles and numbers.
+    """
     # shuffled copies of the three lists
     tile_order = random.sample(
         game_constants.STANDARD_LAND_TILE_ORDER,
