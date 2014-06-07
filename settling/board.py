@@ -197,7 +197,6 @@ class Board:
         if there is a road owned by that player.
         """
         road_coords = self._board_geometry.edge_synonyms(hexagon_coord, edge)
-        road_coords.append((hexagon_coord, edge))
         if player:
             has_road = any(self._edges.get(road_coord) == player
                            for road_coord in road_coords)

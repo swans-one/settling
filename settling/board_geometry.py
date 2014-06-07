@@ -35,7 +35,7 @@ class BoardGeometry(metaclass=ABCMeta):
 
     @abstractmethod
     def edge_synonyms(self, hexagon_coord, edge):
-        """Return any other ways of addressing a given edge.
+        """Return all ways of addressing a given edge.
         """
         pass
 
@@ -100,9 +100,9 @@ class StandardBoard(BoardGeometry):
         other = all_neighbors[edge]
         other_edge = (edge + 3) % 6
         if hx.ordinal_from_hexagon(other) <= self.max_ordinal:
-            return [(other, other_edge)]
+            return [(hexagon_coord, edge), (other, other_edge)]
         else:
-            return []
+            return [(hexagon_coord, edge)]
 
     def vertex_synonyms(self, hexagon_coord, vertex):
         all_neighbors = hx.neighbors(hexagon_coord)

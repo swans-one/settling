@@ -96,7 +96,7 @@ class Test_StandardBoard_edge_synonyms(unittest.TestCase):
         hexagon = (0, 0, 0)
         edge = 0
         synonyms = self.geometry.edge_synonyms(hexagon, edge)
-        expected_synonyms = [((1, 0, -1), 3)]
+        expected_synonyms = [((0, 0, 0), 0), ((1, 0, -1), 3)]
         self.assertEqual(synonyms, expected_synonyms)
 
     def test_no_other_synonyms(self):
@@ -105,7 +105,7 @@ class Test_StandardBoard_edge_synonyms(unittest.TestCase):
         hexagon = (1, 2, -3)
         edge = 1
         synonyms = self.geometry.edge_synonyms(hexagon, edge)
-        expected_synonyms = []
+        expected_synonyms = [((1, 2, -3), 1)]
         self.assertEqual(synonyms, expected_synonyms)
 
     def test_wraps(self):
@@ -114,7 +114,7 @@ class Test_StandardBoard_edge_synonyms(unittest.TestCase):
         hexagon = (1, 0, -1)
         edge = 4
         synonyms = self.geometry.edge_synonyms(hexagon, edge)
-        expected_synonyms = [((1, -1, 0), 1)]
+        expected_synonyms = [((1, 0, -1), 4), ((1, -1, 0), 1)]
         self.assertEqual(synonyms, expected_synonyms)
 
 
