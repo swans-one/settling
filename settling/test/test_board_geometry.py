@@ -130,7 +130,9 @@ class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
         hexagon = (0, 0, 0)
         vertex = 0
         synonyms = self.geometry.vertex_synonyms(hexagon, vertex)
-        expected_synonyms = [((1, -1, 0), 2), ((1, 0, -1), 4)]
+        expected_synonyms = [
+            (hexagon, vertex), ((1, -1, 0), 2), ((1, 0, -1), 4)
+        ]
         self.assertEqual(synonyms, expected_synonyms)
 
     def test_outer_five(self):
@@ -139,7 +141,9 @@ class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
         hexagon = (1, 1, -2)
         vertex = 5
         synonyms = self.geometry.vertex_synonyms(hexagon, vertex)
-        expected_synonyms = [((1, 0, -1), 1), ((2, 0, -2), 3)]
+        expected_synonyms = [
+            (hexagon, vertex), ((1, 0, -1), 1), ((2, 0, -2), 3)
+        ]
         self.assertEqual(synonyms, expected_synonyms)
 
     def test_no_other_synonyms(self):
@@ -148,5 +152,5 @@ class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
         hexagon = (1, 2, -3)
         vertex = 1
         synonyms = self.geometry.vertex_synonyms(hexagon, vertex)
-        expected_synonyms = []
+        expected_synonyms = [(hexagon, vertex)]
         self.assertEqual(synonyms, expected_synonyms)

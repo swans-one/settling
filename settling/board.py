@@ -106,7 +106,6 @@ class Board:
         """Return the port at the given vertex, or None.
         """
         synonyms = self._board_geometry.vertex_synonyms(hexagon_coord, vertex)
-        synonyms.append((hexagon_coord, vertex))
         for synonym in synonyms:
             if self._ports.get(synonym) is not None:
                 return self._ports[synonym]
@@ -235,7 +234,6 @@ class Board:
         bg = self._board_geometry
         verts = self._vertices
         town_coords = bg.vertex_synonyms(hexagon_coord, vertex)
-        town_coords.append((hexagon_coord, vertex))
         if player:
             has_town = any(verts.get(town_coord) == (player, town_or_city)
                            for town_coord in town_coords)
