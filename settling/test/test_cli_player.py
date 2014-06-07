@@ -41,9 +41,22 @@ class Test_CliPlayer_starting_town(unittest.TestCase):
     @patch('builtins.input')
     def test_working(self, input_mock):
         input_mock.side_effect = ['(0, 0, 0)', '0']
-        hexagon_coord, vertex = self.player.starting_town(board)
+        hexagon_coord, vertex = self.player.starting_town(self.board)
         self.assertEqual(hexagon_coord, (0, 0, 0))
         self.assertEqual(vertex, 0)
+
+    @patch('builtins.input')
+    def test_game_rule_violation(self, input_mock):
+        # Two sets of coord/vertex combos. One which is a violation,
+        # and one which isn't.
+        self.board.add_town((0, 0, 0), 1, 'test_b')
+        input_mock.side_effect = [
+            '(0, 0, 0)', '0',
+            '(-1, 0, 1)', '3',
+        ]
+        output = self.player.starting_town(self.board)
+        expected_output = ((-1, 0, 1), 3)
+        self.assertEqual(output, expected_output)a
 
 
 class Test_hexagon_coords_from_string(unittest.TestCase):

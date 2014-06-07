@@ -1,5 +1,6 @@
 from functools import wraps
 
+from settling.exceptions import GameRuleViolation
 from settling.player import Player
 
 
@@ -31,7 +32,7 @@ class CliPlayer(Player):
     def name(self):
         return self.name
 
-    @retry_input(ValueError)
+    @retry_input(ValueError, GameRuleViolation)
     def starting_town(self, board):
         hexagon_prompt = "Place Town on tile: "
         vertex_prompt = "Place Town which vertex of {tile}: "
@@ -39,6 +40,7 @@ class CliPlayer(Player):
         vertex_string = input(vertex_prompt.format(tile=hexagon_string))
         hexagon_coord = hexagon_coord_from_string(hexagon_string)
         vertex = vertex_from_string(vertex_string)
+        board.add_town(hexagon_coord, vertex, self.name)
         return hexagon_coord, vertex
 
     def play_action_card(self, board, hand):
