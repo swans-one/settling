@@ -56,7 +56,7 @@ class Test_CliPlayer_starting_town(unittest.TestCase):
         ]
         output = self.player.starting_town(self.board)
         expected_output = ((-1, 0, 1), 3)
-        self.assertEqual(output, expected_output)a
+        self.assertEqual(output, expected_output)
 
 
 class Test_hexagon_coords_from_string(unittest.TestCase):
