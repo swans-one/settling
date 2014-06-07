@@ -2,6 +2,7 @@ import unittest
 
 from mock import patch
 
+import settling.board as board
 import settling.cli_player as cli_player
 
 
@@ -30,6 +31,19 @@ class Test_retry_input(unittest.TestCase):
             return 3
         get_three()
         self.assertEqual(len(input_mock.mock_calls), 2)
+
+
+class Test_CliPlayer_starting_town(unittest.TestCase):
+    def setUp(self):
+        self.player = cli_player.CliPlayer('test')
+        self.board = board.standard_board()
+
+    @patch('builtins.input')
+    def test_working(self, input_mock):
+        input_mock.side_effect = ['(0, 0, 0)', '0']
+        hexagon_coord, vertex = self.player.starting_town(board)
+        self.assertEqual(hexagon_coord, (0, 0, 0))
+        self.assertEqual(vertex, 0)
 
 
 class Test_hexagon_coords_from_string(unittest.TestCase):
