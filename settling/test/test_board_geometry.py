@@ -154,3 +154,24 @@ class Test_StandardBoard_vertex_synonyms(unittest.TestCase):
         synonyms = self.geometry.vertex_synonyms(hexagon, vertex)
         expected_synonyms = [(hexagon, vertex)]
         self.assertEqual(synonyms, expected_synonyms)
+
+
+class Test_StandardBoard_vertex_neighbors(unittest.TestCase):
+    def setUp(self):
+        self.geometry = board_geometry.StandardBoard()
+
+    def test_center_zero(self):
+        hexagon = (0, 0, 0)
+        vertex = 0
+        vertex_neighbors = self.geometry.vertex_neighbors(hexagon, vertex)
+        expected_neighbors = {
+            ((0, 0, 0), 5), ((1, -1, 0), 1), ((1, 0, -1), 3)
+        }
+        self.assertEqual(vertex_neighbors, expected_neighbors)
+
+    def test_boundary(self):
+        hexagon = (1, 2, -3)
+        vertex = 1
+        vertex_neighbors = self.geometry.vertex_neighbors(hexagon, vertex)
+        expected_neighbors = {((1, 2, -3), 0), ((1, 2, -3), 2)}
+        self.assertEqual(vertex_neighbors, expected_neighbors)

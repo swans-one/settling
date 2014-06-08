@@ -45,6 +45,12 @@ class BoardGeometry(metaclass=ABCMeta):
         """
         pass
 
+    @abstractmethod
+    def vertex_neighbors(self, hexagon_coord, vertex):
+        """Return a cordinate for all the nearby vertices.
+        """
+        pass
+
 
 class StandardBoard(BoardGeometry):
     """The standard 3-4 player catan board.
@@ -114,3 +120,7 @@ class StandardBoard(BoardGeometry):
         if hx.ordinal_from_hexagon(second) <= self.max_ordinal:
             synonyms.append((second, (vertex + 4) % 6))
         return synonyms
+
+    def vertex_neighbors(self, hexagon_coord, vertex):
+        h0, v0 = hexagon_coord, vertex
+        return {(h, (v - 1) % 6) for h, v in self.vertex_synonyms(h0, v0)}
