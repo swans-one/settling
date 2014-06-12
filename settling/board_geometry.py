@@ -122,5 +122,15 @@ class StandardBoard(BoardGeometry):
         return synonyms
 
     def vertex_neighbors(self, hexagon_coord, vertex):
-        h0, v0 = hexagon_coord, vertex
-        return {(h, (v - 1) % 6) for h, v in self.vertex_synonyms(h0, v0)}
+        synonyms = self.vertex_synonyms(hexagon_coord, vertex)
+        if len(synonyms) == 3:
+            neighbors = {(h, (v - 1) % 6) for h, v in synonyms}
+        elif len(synonyms) == 2:
+            neighbors = {(h, (v - 1) % 6) for h, v in synonyms}
+            neighbors.add((synonyms[0][0], (synonyms[0][1] + 1) % 6))
+        elif len(synonyms) == 1:
+            neighbors = {
+                (hexagon_coord, (vertex + 1) % 6),
+                (hexagon_coord, (vertex - 1) % 6)
+            }
+        return neighbors

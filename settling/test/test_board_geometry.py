@@ -169,9 +169,20 @@ class Test_StandardBoard_vertex_neighbors(unittest.TestCase):
         }
         self.assertEqual(vertex_neighbors, expected_neighbors)
 
-    def test_boundary(self):
+    def test_far_boundary(self):
+        # A corner, with only two vertex neighbors from one synonym
         hexagon = (1, 2, -3)
         vertex = 1
         vertex_neighbors = self.geometry.vertex_neighbors(hexagon, vertex)
         expected_neighbors = {((1, 2, -3), 0), ((1, 2, -3), 2)}
+        self.assertEqual(vertex_neighbors, expected_neighbors)
+
+    def test_close_boundary(self):
+        # A corner, with only three vertex neighbors from two synonyms
+        hexagon = (0, -3, 3)
+        vertex = 3
+        vertex_neighbors = self.geometry.vertex_neighbors(hexagon, vertex)
+        expected_neighbors = {
+            ((0, -3, 3), 4), ((0, -3, 3), 2), ((-1, -2, 3), 4)
+        }
         self.assertEqual(vertex_neighbors, expected_neighbors)
