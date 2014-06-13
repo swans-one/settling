@@ -171,6 +171,15 @@ class Board:
             msg = "Towns must be built near land"
             raise GameRuleViolation(msg)
 
+        # Check that there are no towns/citites in adjacent vertices.
+        vertex_neighbors = self._board_geometry.vertex_neighbors(h, v)
+        for adjacent_hexagon_coord, adjacent_vertex in vertex_neighbors:
+            has_town = self.has_town(adjacent_hexagon_coord, adjacent_vertex)
+            has_city = self.has_city(adjacent_hexagon_coord, adjacent_vertex)
+            msg = "Towns may not be built adjacent to existing towns/cities."
+            if has_town or has_city:
+                raise GameRuleViolation(msg)
+
         # If no error is thrown, add the city
         self._vertices[(hexagon_coord, vertex)] = (player, 'town')
 

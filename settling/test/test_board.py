@@ -209,6 +209,11 @@ class Test_Board_add_town(unittest.TestCase):
         with self.assertRaises(GameRuleViolation):
             self.board.add_town((3, 0, -3), 0, 'player1')
 
+    def test_adjacent_town_raises(self):
+        self.board.add_town((0, 0, 0), 0, 'player2')
+        with self.assertRaises(GameRuleViolation):
+            self.board.add_town((0, 0, 0), 1, 'player1')
+
 
 class Test_Board_has_road(unittest.TestCase):
     def setUp(self):
