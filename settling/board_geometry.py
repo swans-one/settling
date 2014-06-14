@@ -51,6 +51,17 @@ class BoardGeometry(metaclass=ABCMeta):
         """
         pass
 
+    @abstractmethod
+    def vertices_around_edge(self, hexagon_coord, edge):
+        """Return the veticies around an edge.
+        """
+        pass
+
+    @abstractmethod
+    def edges_around_vertex(self, hexagon_coord, vertex):
+        """Return the edges around a vertex.
+        """
+        pass
 
 class StandardBoard(BoardGeometry):
     """The standard 3-4 player catan board.
@@ -134,3 +145,13 @@ class StandardBoard(BoardGeometry):
                 (hexagon_coord, (vertex - 1) % 6)
             }
         return neighbors
+
+    def vertices_around_edge(self, hexagon_coord, edge):
+        """Return the veticies around an edge.
+        """
+        pass
+
+    def edges_around_vertex(self, hexagon_coord, vertex):
+        """Return the edges around a vertex.
+        """
+        pass
