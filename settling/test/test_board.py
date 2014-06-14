@@ -158,6 +158,24 @@ class Test_Board_move_robber(unittest.TestCase):
         self.assertEqual(robber_count, 1)
 
 
+class Test_Board_add_initial_town(unittest.TestCase):
+    def setUp(self):
+        tiles = game_constants.STANDARD_TILE_ORDER
+        numbers = game_constants.STANDARD_NUMBER_ORDER
+        ports = game_constants.STANDARD_PORT_MAP
+        board_geom = StandardBoard()
+        self.board = board.Board(tiles, numbers, ports, board_geom)
+
+    def test_both_added(self):
+        town_hex, town_vert = ((0, 0, 0), 0)
+        road_hex, road_vert = ((0, 0, 0), 0)
+        self.board.add_initial_town(
+            town_hex, town_vert, road_hex, road_vert, 'player1'
+        )
+        self.assertEqual(len(self.board._vertices), 1)
+        self.assertEqual(len(self.board._edges), 1)
+
+
 class Test_Board_add_road(unittest.TestCase):
     def setUp(self):
         tiles = game_constants.STANDARD_TILE_ORDER

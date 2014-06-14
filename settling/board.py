@@ -130,6 +130,13 @@ class Board:
         current_robber_tile.has_robber = False
         self.tile(to_coord).has_robber = True
 
+    def add_initial_town(
+            self, town_hexagon_coord, town_vertex,
+            road_hexagon_coord, road_vertex, player):
+        """Add a town during settlement placement.
+        """
+        pass
+
     def add_road(self, hexagon_coord, edge, player):
         """Add a road on the edge between two tiles.
 
