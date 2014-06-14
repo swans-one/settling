@@ -136,6 +136,7 @@ class Board:
             road_hexagon_coord, road_edge, player):
         """Add a town during settlement placement.
         """
+        # Check that the road and town are next to eachother.
         surounding_vertices = self._board_geometry.vertices_around_road(
             road_hexagon_coord, road_edge
         )
@@ -145,6 +146,8 @@ class Board:
         if not town_adjacent:
             msg = "Must place road next to town."
             raise GameRuleViolation(msg)
+
+        # If no error here, try adding the town and road.
         self.add_town(town_hexagon_coord, town_vertex, player)
         self.add_road(road_hexagon_coord, road_edge, player)
 
