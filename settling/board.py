@@ -1,5 +1,6 @@
 import random
 from copy import deepcopy
+from itertools import chain
 
 from settling.exceptions import GameRuleViolation
 from settling.board_geometry import StandardBoard
@@ -132,10 +133,20 @@ class Board:
 
     def add_initial_town(
             self, town_hexagon_coord, town_vertex,
-            road_hexagon_coord, road_vertex, player):
+            road_hexagon_coord, road_edge, player):
         """Add a town during settlement placement.
         """
-        pass
+        surounding_vertices = self._board_geometry.vertices_around_road(
+            road_hexagon_coord, road_edge
+        )
+        sides_of_road = chain(self._board_geometry.vertex_synonyms(h, v)
+                              for h, v in surounding_vertices)
+        town_adjacent = (town_hexagon_coord, town_vertex) in sides_of_road
+        if not town_adjacent:
+            msg = "Must place road next to town."
+            raise GameRuleViolation(msg)
+        self.add_town(town_hexagon_coord, town_vertex, player)
+        self.add_road(road_hexagon_coord, road_edge, player)
 
     def add_road(self, hexagon_coord, edge, player):
         """Add a road on the edge between two tiles.
