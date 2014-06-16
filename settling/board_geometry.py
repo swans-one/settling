@@ -149,7 +149,12 @@ class StandardBoard(BoardGeometry):
     def vertices_around_edge(self, hexagon_coord, edge):
         """Return the veticies around an edge.
         """
-        pass
+        vertices = {
+            (hexagon_coord, edge)
+            (hexagon_coord, (edge + 1) % 5)
+        }
+        return vertices
+
 
     def edges_around_vertex(self, hexagon_coord, vertex):
         """Return the edges around a vertex.
