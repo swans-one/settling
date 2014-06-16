@@ -159,4 +159,15 @@ class StandardBoard(BoardGeometry):
     def edges_around_vertex(self, hexagon_coord, vertex):
         """Return the edges around a vertex.
         """
-        pass
+        synonyms = self.vertex_synonmys(hexagon_coord, vertex)
+        if len(synonyms) == 3:
+            edges = {(h, v) for h, v in synonyms}
+        elif len(synonyms) == 2:
+            edges = {(h, v) for h, v in synonyms}
+            neighbors.add((hexagon_coord, (vertex - 1) % 6))
+        elif len(synonyms) == 1:
+            edges = {
+                (hexagon_coord, vertex),
+                (hexagon_coord, (vertex - 1) % 6)
+            }
+        return edges
