@@ -186,3 +186,22 @@ class Test_StandardBoard_vertex_neighbors(unittest.TestCase):
             ((0, -3, 3), 4), ((0, -3, 3), 2), ((-1, -2, 3), 4)
         }
         self.assertEqual(vertex_neighbors, expected_neighbors)
+
+
+class Test_StandardBoard_vertices_around_edge(unittest.TestCase):
+    def setUp(self):
+        self.geometry = board_geometry.StandardBoard()
+
+    def test_works(self):
+        vertices = self.geometry.vertices_around_edge((0, 0, 0), 0)
+        expected_vertices = {
+            ((0, 0, 0), 0), ((0, 0, 0), 1)
+        }
+        self.assertEqual(vertices, expected_vertices)
+
+    def test_wraps_around_zero(self):
+        vertices = self.geometry.vertices_around_edge((0, 0, 0), 5)
+        expected_vertices = {
+            ((0, 0, 0), 5), ((0, 0, 0), 0)
+        }
+        self.assertEqual(vertices, expected_vertices)

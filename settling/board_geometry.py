@@ -63,6 +63,7 @@ class BoardGeometry(metaclass=ABCMeta):
         """
         pass
 
+
 class StandardBoard(BoardGeometry):
     """The standard 3-4 player catan board.
 
@@ -150,11 +151,10 @@ class StandardBoard(BoardGeometry):
         """Return the veticies around an edge.
         """
         vertices = {
-            (hexagon_coord, edge)
-            (hexagon_coord, (edge + 1) % 5)
+            (hexagon_coord, edge),
+            (hexagon_coord, (edge + 1) % 6)
         }
         return vertices
-
 
     def edges_around_vertex(self, hexagon_coord, vertex):
         """Return the edges around a vertex.

@@ -137,7 +137,7 @@ class Board:
         """Add a town during settlement placement.
         """
         # Check that the road and town are next to eachother.
-        surounding_vertices = self._board_geometry.vertices_around_road(
+        surounding_vertices = self._board_geometry.vertices_around_edge(
             road_hexagon_coord, road_edge
         )
         sides_of_road = chain(self._board_geometry.vertex_synonyms(h, v)
