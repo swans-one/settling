@@ -175,9 +175,3 @@ class StandardBoard(BoardGeometry):
             }
         return edges
 
-
-    def _clockwise_of_vertex(self, hexagon_coord, vertex):
-        """Return True if the hexaon is clockwise of the vertex.
-        """
-        synonyms = self.vertex_synonyms(hexagon_coord, vertex)
-    
