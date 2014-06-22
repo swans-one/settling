@@ -162,12 +162,14 @@ class StandardBoard(BoardGeometry):
         synonyms = self.vertex_synonyms(hexagon_coord, vertex)
         if len(synonyms) == 3:
             edges = {(h, v) for h, v in synonyms}
-        elif len(synonyms) == 2 and :
-            edges = {(h, v) for h, v in synonyms}
-            edges.add((hexagon_coord, (vertex - 1) % 6))
-        elif len(synonyms) == 2 and :
-            edges = {(h, v) for h, v in synonyms}
-            edges.add((hexagon_coord, (vertex + 1) % 6))
+        elif len(synonyms) == 2:
+            synonym_clockwise = self._synonym_is_clockwise(hexagon_coord, vertex)
+            if synonym_clockwise:
+                edges = {(h, v) for h, v in synonyms}
+                edges.add((hexagon_coord, (vertex - 1) % 6))
+            else:
+                edges = {(h, (v - 1) % 6) for h, v in synonyms}
+                edges.add((hexagon_coord, vertex))
         elif len(synonyms) == 1:
             edges = {
                 (hexagon_coord, vertex),
@@ -175,3 +177,20 @@ class StandardBoard(BoardGeometry):
             }
         return edges
 
+    def _synonym_is_clockwise(self, hexagon_coord, vertex):
+        """Return True if synonym is clocwise around the board.
+
+        Raise:
+
+            ValueError if there are not exactly two synonyms.
+        """
+        synonyms = set(self.vertex_synonyms(hexagon_coord, vertex))
+        if len(synonyms) != 2:
+            raise ValueError
+        synonym = synonyms - {(hexagon_coord, vertex)}
+        synonym_hexagon, synonym_vertex = synonym.pop()
+        diff = abs(synonym_vertex - vertex)
+        return (
+            (diff == 2 and vertex > synonym_vertex)
+            or (diff == 4 and vertex < synonym_vertex)
+        )

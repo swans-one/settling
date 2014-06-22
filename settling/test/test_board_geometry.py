@@ -245,6 +245,6 @@ class Test_StandardBoard_edges_around_vertex(unittest.TestCase):
         vertex = 0
         edges_around_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
         expected_edges = {
-            ((1, 2, -3), 0), ((1, 2, -3), 2), ((-1, -2, 3), 4)
+            ((1, 2, -3), 5), ((2, 1, -3), 1), ((1, 2, -3), 0),
         }
         self.assertEqual(edges_around_vertex, expected_edges)
