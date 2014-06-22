@@ -248,3 +248,10 @@ class Test_StandardBoard_edges_around_vertex(unittest.TestCase):
             ((1, 2, -3), 5), ((2, 1, -3), 1), ((1, 2, -3), 0),
         }
         self.assertEqual(edges_around_vertex, expected_edges)
+
+
+class Test_StandardBoard_synonym_is_clockwise(unittest.TestCase):
+    def test_raises_value_error(self):
+        geometry = board_geometry.StandardBoard()
+        with self.assertRaises(ValueError):
+            geometry._synonym_is_clockwise((0, 0, 0), 0)
