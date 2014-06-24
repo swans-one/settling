@@ -140,8 +140,8 @@ class Board:
         surounding_vertices = self._board_geometry.vertices_around_edge(
             road_hexagon_coord, road_edge
         )
-        sides_of_road = chain(self._board_geometry.vertex_synonyms(h, v)
-                              for h, v in surounding_vertices)
+        sides_of_road = set(chain(*(self._board_geometry.vertex_synonyms(h, v)
+                                    for h, v in surounding_vertices)))
         town_adjacent = (town_hexagon_coord, town_vertex) in sides_of_road
         if not town_adjacent:
             msg = "Must place road next to town."
