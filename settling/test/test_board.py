@@ -175,6 +175,17 @@ class Test_Board_add_initial_town(unittest.TestCase):
         self.assertEqual(len(self.board._vertices), 1)
         self.assertEqual(len(self.board._edges), 1)
 
+    def test_raises_game_rule_violation(self):
+        town_hex, town_vert = ((0, 0, 0), 0)
+        road_hex, road_vert = ((0, 0, 0), 0)
+        self.board.add_initial_town(
+            town_hex, town_vert, road_hex, road_vert, 'player1'
+        )
+        with self.assertRaises(GameRuleViolation):
+            self.board.add_initial_town(
+                town_hex, town_vert, road_hex, road_vert, 'player1'
+            )
+
 
 class Test_Board_add_road(unittest.TestCase):
     def setUp(self):
