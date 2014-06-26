@@ -214,40 +214,40 @@ class Test_StandardBoard_edges_around_vertex(unittest.TestCase):
     def test_center_zero(self):
         hexagon = (0, 0, 0)
         vertex = 0
-        edges_around_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
+        edges_by_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
         expected_edges = {
             ((0, 0, 0), 0), ((1, -1, 0), 2), ((1, 0, -1), 4)
         }
-        self.assertEqual(edges_around_vertex, expected_edges)
+        self.assertEqual(edges_by_vertex, expected_edges)
 
     def test_far_boundary(self):
         # A corner, with only two vertex neighbors from one synonym
         hexagon = (1, 2, -3)
         vertex = 1
-        edges_around_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
+        edges_by_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
         expected_edges = {((1, 2, -3), 1), ((1, 2, -3), 0)}
-        self.assertEqual(edges_around_vertex, expected_edges)
+        self.assertEqual(edges_by_vertex, expected_edges)
 
     def test_close_boundary(self):
         # A corner, with only three vertex neighbors from two synonyms
         hexagon = (0, -3, 3)
         vertex = 3
-        edges_around_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
+        edges_by_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
         expected_edges = {
             ((0, -3, 3), 3), ((0, -3, 3), 2), ((-1, -2, 3), 4)
         }
-        self.assertEqual(edges_around_vertex, expected_edges)
+        self.assertEqual(edges_by_vertex, expected_edges)
 
     def test_close_boundary_right_side(self):
         # A corner, with only three vertex neighbors from two synonyms
         # The sides differ in how their selection might work.
         hexagon = (1, 2, -3)
         vertex = 0
-        edges_around_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
+        edges_by_vertex = self.geometry.edges_around_vertex(hexagon, vertex)
         expected_edges = {
             ((1, 2, -3), 5), ((2, 1, -3), 1), ((1, 2, -3), 0),
         }
-        self.assertEqual(edges_around_vertex, expected_edges)
+        self.assertEqual(edges_by_vertex, expected_edges)
 
 
 class Test_StandardBoard_synonym_is_clockwise(unittest.TestCase):

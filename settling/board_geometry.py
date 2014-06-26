@@ -163,7 +163,9 @@ class StandardBoard(BoardGeometry):
         if len(synonyms) == 3:
             edges = {(h, v) for h, v in synonyms}
         elif len(synonyms) == 2:
-            synonym_clockwise = self._synonym_is_clockwise(hexagon_coord, vertex)
+            synonym_clockwise = self._synonym_is_clockwise(
+                hexagon_coord, vertex
+            )
             if synonym_clockwise:
                 edges = {(h, v) for h, v in synonyms}
                 edges.add((hexagon_coord, (vertex - 1) % 6))
