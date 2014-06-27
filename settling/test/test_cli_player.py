@@ -58,6 +58,16 @@ class Test_CliPlayer_starting_town(unittest.TestCase):
         expected_output = ((-1, 0, 1), 3)
         self.assertEqual(output, expected_output)
 
+    @patch('builtins.input')
+    def test_value_error_continues(self, input_mock):
+        input_mock.side_effect = [
+            '(0, 0, 0)', 'wrong',
+            '(-1, 0, 1)', '3',
+        ]
+        output = self.player.starting_town(self.board)
+        expected_output = ((-1, 0, 1), 3)
+        self.assertEqual(output, expected_output)
+
 
 class Test_hexagon_coords_from_string(unittest.TestCase):
     def test_different_input_formats(self):
