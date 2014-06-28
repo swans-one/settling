@@ -2,6 +2,7 @@ from functools import wraps
 
 from settling.exceptions import GameRuleViolation
 from settling.player import Player
+from settling import player_action, game_constants
 
 
 def retry_input(*errors):
@@ -43,8 +44,15 @@ class CliPlayer(Player):
         board.add_town(hexagon_coord, vertex, self.name)
         return hexagon_coord, vertex
 
+    @retry_input(ValueError, GameRuleViolation)
     def play_action_card(self, board, hand):
-        pass
+        print('You have the following action cards:')
+        for card in hand:
+            if card not in game_constants.RESOURCE_TILE_TYPES:
+                print(card)
+        to_play = input('Which to play? (Return for none):')
+        while to_play != '':
+            _play_action(to_play)
 
     def act(self, board, hand):
         pass
